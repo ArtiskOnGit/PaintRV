@@ -54,6 +54,9 @@
     <ClCompile Include="Canva.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="ImguiWindows.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stb_image.h">
@@ -96,6 +99,9 @@
       <Filter>Fichiers d%27en-tête\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Canva.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiWindows.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

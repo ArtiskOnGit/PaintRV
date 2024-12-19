@@ -32,7 +32,7 @@ int main()
 
     while (!glfwWindowShouldClose(game.window))
     {
-        game.init_ui();
+        game.imguiWindows->init_ui();
         ourShader.use();
 
 

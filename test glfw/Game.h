@@ -9,6 +9,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "Canva.h"
+#include "ImguiWindows.h"
 
 #include "Shader.h"
 
@@ -21,15 +22,15 @@ private :
 	bool drawing = false;
 	double last_mouse_x = 0;
 	double last_mouse_y = 0;
-	ImGuiIO io;
+	
 public:
+	ImguiWindows* imguiWindows;
 	Canva canva;
 	GLFWwindow* window = nullptr;
 	static Game* instance;
 	int init_opengl_glfw();
 	int load_texture();
 	int render();
-	void init_ui();
 	Game();
 
 	void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);

@@ -1,5 +1,7 @@
 #include "Canva.h"
 
+
+//marche pas pour des grandes surfaces
 void Canva::recursive_fill(int x, int y)
 {
     if (data[coord_to_indextexture(x, y) * 3] == ColorToFill[0]

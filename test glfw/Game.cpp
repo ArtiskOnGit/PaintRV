@@ -29,6 +29,7 @@ unsigned int indices[] = {
 Game::Game() {
     
     instance = this;
+    imguiWindows = new ImguiWindows(&canva);
 
 }
  
@@ -52,7 +53,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
     
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !io.WantCaptureMouse) {
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !imguiWindows->io.WantCaptureMouse) {
 
         
         drawing = true;
@@ -90,7 +91,7 @@ void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int
 
 
 void Game::cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
-    if (drawing && !io.WantCaptureMouse) {
+    if (drawing && !imguiWindows->io.WantCaptureMouse) {
         //std::cout << xpos << " " << ypos << std::endl;
 
         double step_number = std::max(abs(last_mouse_x - xpos),abs(last_mouse_y-ypos));
@@ -260,59 +261,5 @@ int Game::render()
     return 0;
 }
 
-void Game::init_ui()
-{
-    ImGui::StyleColorsDark();
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-
-    io = ImGui::GetIO();
-
-    ImGui::NewFrame();
-    //ImGui::ShowDemoWindow(); // Show demo window! :)
-
-    ImGui::Begin("Tools!");                          // Create a window called "Hello, world!" and append into it.
-    ImGui::Text("This is the tools windows.");
-    //tool selector
-    ImGui::RadioButton("No tool", &canva.tool, 0); ImGui::SameLine();
-    ImGui::RadioButton("Brush", &canva.tool, 1); ImGui::SameLine();
-    ImGui::RadioButton("Eraser", &canva.tool, 2); ImGui::SameLine();
-    ImGui::RadioButton("Fill", &canva.tool, 3);
-    ImGui::RadioButton("Circle", &canva.tool, 4);
-    ImGui::SliderInt("Taille", &(canva.size), 1, 100);
-    //ImGui::SliderFloat("Taille", &size, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-    ImGui::ColorEdit3("Couleur pinceau", (float*)&(canva.couleur_pinceau)); // Edit 3 floats representing a color
-
-
-    
-    ImGui::End();
-
-
-    //test de menu
-    if (ImGui::BeginMainMenuBar()) {
-        if (ImGui::BeginMenu("File")) {
-
-            ImGui::MenuItem("(file menu)", NULL, false, false);
-            if (ImGui::MenuItem("New")) { printf("New file\n"); }
-            if (ImGui::MenuItem("Open", "Ctrl+O")) {}
-            if (ImGui::BeginMenu("Open Recent"))
-            {
-                ImGui::MenuItem("fish_hat.jpg");
-                ImGui::MenuItem("fish.png");
-                ImGui::MenuItem("camarchepas.jpg");
-                ImGui::EndMenu();
-            }
-            if (ImGui::MenuItem("Save", "Ctrl+S")) { printf("Save\n"); }
-            if (ImGui::MenuItem("Save As..")) { printf("Save as\n"); }
-
-            ImGui::EndMenu();
-        }
-
-        ImGui::EndMainMenuBar();
-    }
-    
-  
-
-}
 
 
