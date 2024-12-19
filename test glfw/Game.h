@@ -22,6 +22,10 @@ private :
 	bool drawing = false;
 	double last_mouse_x = 0;
 	double last_mouse_y = 0;
+
+	int window_height;
+	int window_width;
+
 	
 public:
 	ImguiWindows* imguiWindows;
@@ -29,7 +33,9 @@ public:
 	GLFWwindow* window = nullptr;
 	static Game* instance;
 	int init_opengl_glfw();
-	int load_texture();
+	void prepare_vertex();
+	int new_blank_canva(int width_canva, int height_canva);
+	int load_image(const char* filepath);
 	int render();
 	Game();
 

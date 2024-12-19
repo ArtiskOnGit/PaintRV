@@ -24,11 +24,12 @@ int main()
 {
     Game game;
     game.init_opengl_glfw();
-     
+    game.prepare_vertex();
     //ouvrir la texture, les vertex
-    game.load_texture();
+    //game.load_image("container.bmp"); //methode archaïque horrible
+    game.canva.new_blank_canva(550, 550);
 
-    Shader ourShader("C:\\Users\\Eleve\\source\\repos\\test glfw\\test glfw\\vertex.vs", "C:\\Users\\Eleve\\source\\repos\\test glfw\\test glfw\\fragment.fs");
+    Shader ourShader("C:\\Users\\Alexandre\\Documents\\cours\\tries\\P1RV\\PaintRV\\test glfw\\vertex.vs", "C:\\Users\\Alexandre\\Documents\\cours\\tries\\P1RV\\PaintRV\\test glfw\\fragment.fs");
 
     while (!glfwWindowShouldClose(game.window))
     {

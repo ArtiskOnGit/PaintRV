@@ -57,6 +57,7 @@ void ImguiWindows::init_ui()
 
 void ImguiWindows::NewFileWindow()
 {
+    
     showNewFileWindow = true;
 	bool window_contents_visible = ImGui::Begin("Example: Documents", &showNewFileWindow);
     if (!window_contents_visible)
@@ -66,10 +67,11 @@ void ImguiWindows::NewFileWindow()
         return;
     }
     ImGui::Text("Entrez la taille du canva desiree : ");
-    ImGui::DragInt("X", &(canva->width), 1.f);
-    ImGui::DragInt("Y", &(canva->height), 1.f);
+    ImGui::DragInt("X", &(new_canva_width), 1.f);
+    ImGui::DragInt("Y", &(new_canva_height), 1.f);
     if (ImGui::Button("Valider")) {
-        //TODO Generer texture de la bonne taille;
+        canva->new_blank_canva(new_canva_width, new_canva_height);
+        showNewFileWindow = false;
     }
 
 

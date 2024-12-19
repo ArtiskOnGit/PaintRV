@@ -1,5 +1,4 @@
 #include <windows.h>
-#include <commdlg.h> 
 #include "Game.h"
 #include "stb_image.h"
 
@@ -35,7 +34,7 @@ Game::Game() {
  
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) // gerer mieux
 {
-    glViewport(0, 0, width, height);
+    //glViewport(0, 0, width, height);
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) //old
@@ -58,8 +57,14 @@ void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int
         
         drawing = true;
         double xpos, ypos;
+        
         glfwGetCursorPos(window, &xpos, &ypos);
-        std::cout << xpos << " " << ypos << std::endl;
+        
+       
+        glfwGetWindowSize(window, &window_width, &window_height);
+        //ypos = canva.height - ypos;
+        std::cout << xpos << " " << ypos << " " << ypos - (window_height - canva.height) << std::endl;
+        ypos = ypos - (window_height - canva.height);
         last_mouse_x = xpos;
         last_mouse_y = ypos;
         switch (canva.tool)
@@ -93,7 +98,7 @@ void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int
 void Game::cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
     if (drawing && !imguiWindows->io.WantCaptureMouse) {
         //std::cout << xpos << " " << ypos << std::endl;
-
+        ypos = ypos - (window_height - canva.height);
         double step_number = std::max(abs(last_mouse_x - xpos),abs(last_mouse_y-ypos));
         switch (canva.tool)
         {
@@ -176,6 +181,8 @@ int Game::init_opengl_glfw()
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_CAPTURED);
     //FIN
 
+    glfwGetWindowSize(window, &window_width, &window_height);
+
     // initialisation imgui
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -187,11 +194,12 @@ int Game::init_opengl_glfw()
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
     ImGui_ImplOpenGL3_Init();
+
+    
 }
 
-int Game::load_texture()
+void Game::prepare_vertex()
 {
-
 
 
     glGenVertexArrays(1, &VAO);
@@ -213,7 +221,7 @@ int Game::load_texture()
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    
+
     glGenTextures(1, &texture);
 
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -224,20 +232,29 @@ int Game::load_texture()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    //load a texture
+}
 
-    canva.data = stbi_load("container.bmp", &(canva.width), &(canva.height), &(canva.nrChannels), 0);
-    std::cout << canva.height << canva.width << std::endl;
-    if (canva.data)
+
+
+int Game::load_image(const char* filepath)
+{
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, canva.width, canva.height, 0, GL_RGB, GL_UNSIGNED_BYTE, canva.data);
-        glGenerateMipmap(GL_TEXTURE_2D);
+        //load an image
+        delete canva.data;
+        canva.data = stbi_load(filepath, &(canva.width), &(canva.height), &(canva.nrChannels), 0);
+
+        std::cout << canva.height << canva.width << std::endl;
+        if (canva.data)
+        {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, canva.width, canva.height, 0, GL_RGB, GL_UNSIGNED_BYTE, canva.data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+        }
+        else
+        {
+            std::cout << "Failed to load texture" << std::endl;
+            return -1;
+        }    // gen texture
     }
-    else
-    {
-        std::cout << "Failed to load texture" << std::endl;
-        return -1;
-    }    // gen texture
 }
 
 int Game::render()
@@ -246,6 +263,7 @@ int Game::render()
 
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
 
     glBindTexture(GL_TEXTURE_2D, texture);
 

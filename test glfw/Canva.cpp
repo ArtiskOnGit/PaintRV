@@ -78,11 +78,12 @@ void Canva::heap_fill(int x, int y)
 
 
 int Canva::coord_to_indextexture(int x, int y) {
-    if (x > width) { x =  width; }
-    if (y > height) { y =  height; }
-    if (x < 0) { x = 0.; }
-    if (y < 0) { y = 0.; }
-    y = height - y;
+    if (x >= width) { x = width-1; }
+    if (y >= height) { y =  height - 1; }
+    if (x < 0) { x = 0; }
+    if (y < 0) { y = 0; }
+    y = height - y - 1;
+    assert((x + y * width)*3 < width*height*3);
     return  x + y * width;
 }
 
@@ -136,4 +137,31 @@ void Canva::draw_circle(double center_x, double center_y, int radius, bool erase
             }
         }
     }
+}
+
+int Canva::new_blank_canva(int width_canva, int height_canva)
+{
+    //create blank canva
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    if (data) { delete[] data; }
+    data = nullptr;
+    height = height_canva;
+    width = width_canva;
+    glViewport(0, 0, width, height);
+    data = new unsigned char[3 * width * height];
+    for (int i = 0; i < 3 * width * height; i++) {
+        data[i] = 255;
+    }
+    
+    std::cout <<"size of new frame : " << height << " " << width << std::endl;
+    if (data)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+        return -1;
+    }    // gen texture
 }

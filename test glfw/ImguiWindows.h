@@ -13,6 +13,8 @@ class ImguiWindows
 {
 private : 
 	Canva* canva = nullptr;
+	int new_canva_width = 550;
+	int new_canva_height = 550;
 	
 public:
 	ImGuiIO io;

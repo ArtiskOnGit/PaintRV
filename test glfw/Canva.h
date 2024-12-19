@@ -35,5 +35,7 @@ public:
 	int coord_to_indextexture(int x, int y);
 	void draw_circle(double center_x, double center_y, int radius, bool erase = false);
 
+	int new_blank_canva(int width_canva, int height_canva);
+
 };
 
