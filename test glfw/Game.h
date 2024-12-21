@@ -16,6 +16,8 @@
 #include <iostream>
 #include <algorithm>
 #include <iostream>
+
+
 class Game
 {
 private :
@@ -34,8 +36,8 @@ public:
 	static Game* instance;
 	int init_opengl_glfw();
 	void prepare_vertex();
-	int new_blank_canva(int width_canva, int height_canva);
-	int load_image(const char* filepath);
+	
+	
 	int render();
 	Game();
 

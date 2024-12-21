@@ -1,5 +1,10 @@
 #include "Canva.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#define STBI_ASSERT(x)
+#include "stb_image.h"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
 
 //marche pas pour des grandes surfaces
 void Canva::recursive_fill(int x, int y)
@@ -142,7 +147,7 @@ void Canva::draw_circle(double center_x, double center_y, int radius, bool erase
 int Canva::new_blank_canva(int width_canva, int height_canva)
 {
     //create blank canva
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    
     if (data) { delete[] data; }
     data = nullptr;
     height = height_canva;
@@ -164,4 +169,37 @@ int Canva::new_blank_canva(int width_canva, int height_canva)
         std::cout << "Failed to load texture" << std::endl;
         return -1;
     }    // gen texture
+}
+
+int Canva::load_image(const char* filepath)
+{
+    {
+        //load an image
+        if (data) { delete[] data; }
+        data = nullptr;
+        data = stbi_load(filepath, &(width), &(height), &(nrChannels), 0);
+        glViewport(0, 0, width, height);
+        std::cout << height << width << std::endl;
+        if (data)
+        {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+        }
+        else
+        {
+            std::cout << "Failed to load texture" << std::endl;
+            return -1;
+        }    // gen texture
+    }
+}
+
+bool Canva::save_image(const char* filepath, int format)
+{
+    if (format == 0) { //png
+    stbi_write_png(filepath, width, height, nrChannels, data, width * nrChannels);
+}
+    else if (format == 1) {
+        stbi_write_jpg(filepath, width, height, nrChannels, data, 100);
+    }
+    return true;
 }

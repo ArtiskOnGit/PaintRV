@@ -430,3 +430,7 @@ FodyWeavers.xsd
 *.exe
 *.out
 *.app
+
+
+#chemin de test de sauvegarde d'image : 
+/test glfw/saving_test

@@ -12,6 +12,7 @@ void ImguiWindows::init_ui()
     ImGui::ShowDemoWindow(); // Show demo window! :)
 
     if (showNewFileWindow) { NewFileWindow(); }
+    if (showSaveAsWindow) { SaveAsWindow(); }
 
 
     ImGui::Begin("Tools!");                          // Create a window called "Hello, world!" and append into it.
@@ -40,13 +41,13 @@ void ImguiWindows::init_ui()
             if (ImGui::MenuItem("Open", "Ctrl+O")) {}
             if (ImGui::BeginMenu("Open Recent"))
             {
-                ImGui::MenuItem("fish_hat.jpg");
+                if (ImGui::MenuItem("fish_hat.jpg")) { canva->load_image("container.jpg"); }
                 ImGui::MenuItem("fish.png");
                 ImGui::MenuItem("camarchepas.jpg");
                 ImGui::EndMenu();
             }
             if (ImGui::MenuItem("Save", "Ctrl+S")) { printf("Save\n"); }
-            if (ImGui::MenuItem("Save As..")) { printf("Save as\n"); }
+            if (ImGui::MenuItem("Save As..")) { showSaveAsWindow = true; printf("Save as\n"); }
 
             ImGui::EndMenu();
         }
@@ -72,6 +73,37 @@ void ImguiWindows::NewFileWindow()
     if (ImGui::Button("Valider")) {
         canva->new_blank_canva(new_canva_width, new_canva_height);
         showNewFileWindow = false;
+    }
+
+
+    ImGui::End();
+}
+
+
+void ImguiWindows::SaveAsWindow()
+{
+
+    showSaveAsWindow = true;
+    bool window_contents_visible = ImGui::Begin("Example: Documents", &showNewFileWindow);
+    if (!window_contents_visible)
+    {
+        printf("Ici\n");
+        ImGui::End();
+        return;
+    }
+    ImGui::Text("Sauvegarde le fichier vers: ");
+    static char path[512] = "C:\\\\Users\\\Alexandre\\Documents\\cours\\tries\\P1RV\\PaintRV\\test glfw\\saving_test\\test";
+    ImGui::InputText("Chemin de sauvegarde du fichier ", path, IM_ARRAYSIZE(path));
+    static int format = 0;
+    ImGui::Text("format du fichier: ");
+    ImGui::RadioButton("png", &format, 0); ImGui::SameLine();
+    ImGui::RadioButton("jpg", &format, 1);
+
+    if (ImGui::Button("Valider")) {
+        if (canva->save_image(path, format)) {
+            showSaveAsWindow = false;
+        }
+        else { ImGui::Text("Erreur dans la sauvegarde du fichier "); }
     }
 
 

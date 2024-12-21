@@ -23,6 +23,8 @@ public:
 	void init_ui();
 
 	bool showNewFileWindow = false;
+	bool showSaveAsWindow = false;
 	void NewFileWindow();
+	void SaveAsWindow();
 };
 

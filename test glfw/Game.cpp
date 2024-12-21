@@ -1,6 +1,5 @@
-#include <windows.h>
 #include "Game.h"
-#include "stb_image.h"
+
 
 
 //unsigned char* data;
@@ -8,9 +7,7 @@ unsigned int texture;
 
 unsigned int VBO, VAO, EBO;
 
-#define STB_IMAGE_IMPLEMENTATION
-#define STBI_ASSERT(x)
-#include "stb_image.h"
+
 Game* Game::instance = nullptr;
 float z = 0.0f;
 float vertices[] = {
@@ -183,6 +180,8 @@ int Game::init_opengl_glfw()
 
     glfwGetWindowSize(window, &window_width, &window_height);
 
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1); //so that pixel data rows don't have to align to 4 byte
+
     // initialisation imgui
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -236,26 +235,7 @@ void Game::prepare_vertex()
 
 
 
-int Game::load_image(const char* filepath)
-{
-    {
-        //load an image
-        delete canva.data;
-        canva.data = stbi_load(filepath, &(canva.width), &(canva.height), &(canva.nrChannels), 0);
 
-        std::cout << canva.height << canva.width << std::endl;
-        if (canva.data)
-        {
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, canva.width, canva.height, 0, GL_RGB, GL_UNSIGNED_BYTE, canva.data);
-            glGenerateMipmap(GL_TEXTURE_2D);
-        }
-        else
-        {
-            std::cout << "Failed to load texture" << std::endl;
-            return -1;
-        }    // gen texture
-    }
-}
 
 int Game::render()
 {

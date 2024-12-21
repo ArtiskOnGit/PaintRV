@@ -29,12 +29,12 @@ int main()
     //game.load_image("container.bmp"); //methode archaïque horrible
     game.canva.new_blank_canva(550, 550);
 
-    Shader ourShader("C:\\Users\\Alexandre\\Documents\\cours\\tries\\P1RV\\PaintRV\\test glfw\\vertex.vs", "C:\\Users\\Alexandre\\Documents\\cours\\tries\\P1RV\\PaintRV\\test glfw\\fragment.fs");
+    Shader shader("C:\\Users\\Alexandre\\Documents\\cours\\tries\\P1RV\\PaintRV\\test glfw\\vertex.vs", "C:\\Users\\Alexandre\\Documents\\cours\\tries\\P1RV\\PaintRV\\test glfw\\fragment.fs");
 
     while (!glfwWindowShouldClose(game.window))
     {
         game.imguiWindows->init_ui();
-        ourShader.use();
+        shader.use();
 
 
         //glDrawArrays(GL_TRIANGLES, 0, 3);

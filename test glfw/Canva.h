@@ -22,7 +22,8 @@ private:
 
 public:
 	int tool;
-	int width, height, nrChannels;
+	int width, height;
+	int nrChannels = 3;
 	ImVec4 couleur_pinceau = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 	ImVec4 couleur_eraser = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
 	int size = 3;
@@ -36,6 +37,8 @@ public:
 	void draw_circle(double center_x, double center_y, int radius, bool erase = false);
 
 	int new_blank_canva(int width_canva, int height_canva);
+	int load_image(const char* filepath);
+	bool save_image(const char* filepath, int format);
 
 };
 
