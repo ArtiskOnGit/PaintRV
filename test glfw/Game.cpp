@@ -77,7 +77,10 @@ void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int
         case 3:
             canva.fill(xpos, ypos);
             break;
-        case 4: // Cercle
+        case 4:
+            canva.pipette(xpos, ypos);
+            break;
+        case 5: // Cercle
             canva.draw_circle(xpos, ypos, canva.size);
             break;
         }

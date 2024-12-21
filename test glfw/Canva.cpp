@@ -144,6 +144,13 @@ void Canva::draw_circle(double center_x, double center_y, int radius, bool erase
     }
 }
 
+void Canva::pipette(int x, int y)
+{
+    couleur_pinceau.x = ((float) data[coord_to_indextexture(x, y) * 3] + 0)/255;
+    couleur_pinceau.y = ((float) data[coord_to_indextexture(x, y) * 3 + 1])/255;
+    couleur_pinceau.z = ((float) data[coord_to_indextexture(x, y) * 3 + 2])/255;
+}
+
 int Canva::new_blank_canva(int width_canva, int height_canva)
 {
     //create blank canva

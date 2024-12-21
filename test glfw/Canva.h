@@ -35,6 +35,7 @@ public:
 	void fill(int x, int y);
 	int coord_to_indextexture(int x, int y);
 	void draw_circle(double center_x, double center_y, int radius, bool erase = false);
+	void pipette(int x, int y);
 
 	int new_blank_canva(int width_canva, int height_canva);
 	int load_image(const char* filepath);
