@@ -11,8 +11,13 @@ void ImguiWindows::init_ui()
     ImGui::NewFrame();
     ImGui::ShowDemoWindow(); // Show demo window! :)
 
+    //fenetres auxillaires
     if (showNewFileWindow) { NewFileWindow(); }
     if (showSaveAsWindow) { SaveAsWindow(); }
+    if (showOpenFileWindow) { OpenFileWindow(); }
+
+    //shortcuts
+    //if (ImGui::Shortcut(ImGuiMod_Ctrl | ImGuiKey_O && !showOpenFileWindow)) { printf("Open File shortcut"); showOpenFileWindow = true; }
 
 
     ImGui::Begin("Tools!");                          // Create a window called "Hello, world!" and append into it.
@@ -34,11 +39,12 @@ void ImguiWindows::init_ui()
 
     //test de menu
     if (ImGui::BeginMainMenuBar()) {
+        
         if (ImGui::BeginMenu("File")) {
 
             ImGui::MenuItem("(file menu)", NULL, false, false);
             if (ImGui::MenuItem("New")) {showNewFileWindow = true; printf("New file\n"); }
-            if (ImGui::MenuItem("Open", "Ctrl+O")) {}
+            if (ImGui::MenuItem("Open", "Ctrl+O")) { showOpenFileWindow = true; printf("Open file\n");  }
             if (ImGui::BeginMenu("Open Recent"))
             {
                 if (ImGui::MenuItem("fish_hat.jpg")) { canva->load_image("container.jpg"); }
@@ -59,7 +65,7 @@ void ImguiWindows::init_ui()
 void ImguiWindows::NewFileWindow()
 {
     
-    showNewFileWindow = true;
+    
 	bool window_contents_visible = ImGui::Begin("Example: Documents", &showNewFileWindow);
     if (!window_contents_visible)
     {
@@ -83,8 +89,8 @@ void ImguiWindows::NewFileWindow()
 void ImguiWindows::SaveAsWindow()
 {
 
-    showSaveAsWindow = true;
-    bool window_contents_visible = ImGui::Begin("Example: Documents", &showNewFileWindow);
+    
+    bool window_contents_visible = ImGui::Begin("Example: Documents", &showSaveAsWindow);
     if (!window_contents_visible)
     {
         printf("Ici\n");
@@ -104,6 +110,33 @@ void ImguiWindows::SaveAsWindow()
             showSaveAsWindow = false;
         }
         else { ImGui::Text("Erreur dans la sauvegarde du fichier "); }
+    }
+
+
+    ImGui::End();
+}
+
+void ImguiWindows::OpenFileWindow()
+{
+
+
+    bool window_contents_visible = ImGui::Begin("Example: Documents", &showOpenFileWindow);
+    if (!window_contents_visible)
+    {
+        printf("Ici\n");
+        ImGui::End();
+        return;
+    }
+    ImGui::Text("Ouvrir un fichier : ");
+    static char path[512] = "C:\\\\Users\\\Alexandre\\Documents\\cours\\tries\\P1RV\\PaintRV\\test glfw\\saving_test\\test";
+    ImGui::InputText("Chemin du fichier ", path, IM_ARRAYSIZE(path));
+   
+
+    if (ImGui::Button("Valider")) {
+        if (canva->load_image(path)) {
+            showOpenFileWindow = false;
+        }
+        else { ImGui::Text("Erreur dans l'ouverture du fichier "); }
     }
 
 

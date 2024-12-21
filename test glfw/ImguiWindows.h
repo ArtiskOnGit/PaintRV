@@ -24,7 +24,9 @@ public:
 
 	bool showNewFileWindow = false;
 	bool showSaveAsWindow = false;
+	bool showOpenFileWindow = false;
 	void NewFileWindow();
 	void SaveAsWindow();
+	void OpenFileWindow();
 };
 

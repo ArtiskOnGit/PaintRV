@@ -178,16 +178,17 @@ int Canva::load_image(const char* filepath)
         if (data) { delete[] data; }
         data = nullptr;
         data = stbi_load(filepath, &(width), &(height), &(nrChannels), 0);
-        glViewport(0, 0, width, height);
-        std::cout << height << width << std::endl;
+       
         if (data)
         {
+            glViewport(0, 0, width, height);
+            std::cout << height << width << std::endl;
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
             glGenerateMipmap(GL_TEXTURE_2D);
         }
         else
         {
-            std::cout << "Failed to load texture" << std::endl;
+            std::cout << "Failed to load image" << std::endl;
             return -1;
         }    // gen texture
     }
