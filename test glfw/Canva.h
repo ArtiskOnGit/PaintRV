@@ -28,8 +28,12 @@ public:
 	ImVec4 couleur_eraser = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
 	int size = 3;
 
+	float zoom = 1.0f;
+
 	Canva() {}
 	unsigned char* data;
+
+	void actualise_viewport();
 
 	void draw_brush(int xpos_mouse, int ypos_mouse, bool eraser = false);
 	void fill(int x, int y);

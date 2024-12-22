@@ -59,11 +59,14 @@ void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int
         
        
         glfwGetWindowSize(window, &window_width, &window_height);
+        xpos /= canva.zoom;
+        ypos /= canva.zoom;
         //ypos = canva.height - ypos;
-        std::cout << xpos << " " << ypos << " " << ypos - (window_height - canva.height) << std::endl;
-        ypos = ypos - (window_height - canva.height);
+        std::cout << xpos << " " << ypos << " " << ypos - ((window_height - canva.height) / canva.zoom) << std::endl;
+        ypos = ypos - ((window_height - canva.height) / canva.zoom);
         last_mouse_x = xpos;
         last_mouse_y = ypos;
+
         switch (canva.tool)
         {
         case 0:
@@ -87,7 +90,7 @@ void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int
 
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, canva.width, canva.height, 0, GL_RGB, GL_UNSIGNED_BYTE, canva.data);
-        glGenerateMipmap(GL_TEXTURE_2D);
+        //glGenerateMipmap(GL_TEXTURE_2D);
     }
     else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
         drawing = false;
@@ -98,8 +101,12 @@ void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int
 void Game::cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
     if (drawing && !imguiWindows->io.WantCaptureMouse) {
         //std::cout << xpos << " " << ypos << std::endl;
-        ypos = ypos - (window_height - canva.height);
+        ypos = ypos - (window_height - (canva.height));
+        xpos /= canva.zoom;
+        ypos /= canva.zoom;
+        
         double step_number = std::max(abs(last_mouse_x - xpos),abs(last_mouse_y-ypos));
+
         switch (canva.tool)
         {
         case 0 :
@@ -121,7 +128,7 @@ void Game::cursor_position_callback(GLFWwindow* window, double xpos, double ypos
         }
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, canva.width, canva.height, 0, GL_RGB, GL_UNSIGNED_BYTE, canva.data);
-        glGenerateMipmap(GL_TEXTURE_2D);
+        //glGenerateMipmap(GL_TEXTURE_2D);
     }
 }
 
@@ -138,7 +145,16 @@ void Game::cursor_position_callback_wrapper(GLFWwindow* window, double xpos, dou
 }
 
 void  Game::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-    z *= 0.9;
+    std::cout << xoffset << " " << yoffset << std::endl;
+    if (yoffset > 0) {
+        canva.zoom *= 1.1f;
+    }
+    else if (yoffset < 0) {
+        canva.zoom *= 0.9f;
+    }
+    canva.actualise_viewport();
+    printf("dezooming");
+    
 }
 
 void Game::scroll_callback_wrapper(GLFWwindow* window, double xoffset, double yoffset) {
@@ -170,7 +186,7 @@ int Game::init_opengl_glfw()
         return -1;
     }
 
-    glViewport(0, 0, 800, 600);
+    //glViewport(0, 0, 800, 600);
     //setting the glfw callbacks
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetKeyCallback(window, key_callback);
@@ -231,8 +247,9 @@ void Game::prepare_vertex()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 }
 

@@ -92,6 +92,11 @@ int Canva::coord_to_indextexture(int x, int y) {
     return  x + y * width;
 }
 
+void Canva::actualise_viewport()
+{
+    glViewport(0, 0, zoom * width, zoom * height);
+}
+
 void Canva::draw_brush(int xpos_mouse, int ypos_mouse, bool eraser )
 {
     ImVec4 couleur;
@@ -159,7 +164,7 @@ int Canva::new_blank_canva(int width_canva, int height_canva)
     data = nullptr;
     height = height_canva;
     width = width_canva;
-    glViewport(0, 0, width, height);
+    actualise_viewport();
     data = new unsigned char[3 * width * height];
     for (int i = 0; i < 3 * width * height; i++) {
         data[i] = 255;
@@ -188,7 +193,7 @@ int Canva::load_image(const char* filepath)
        
         if (data)
         {
-            glViewport(0, 0, width, height);
+            actualise_viewport();
             std::cout << height << width << std::endl;
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
             glGenerateMipmap(GL_TEXTURE_2D);
