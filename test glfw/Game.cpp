@@ -59,11 +59,11 @@ void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int
         
        
         glfwGetWindowSize(window, &window_width, &window_height);
+        ypos = ypos - (window_height - (canva.height * canva.zoom));
         xpos /= canva.zoom;
         ypos /= canva.zoom;
         //ypos = canva.height - ypos;
         std::cout << xpos << " " << ypos << " " << ypos - ((window_height - canva.height) / canva.zoom) << std::endl;
-        ypos = ypos - ((window_height - canva.height) / canva.zoom);
         last_mouse_x = xpos;
         last_mouse_y = ypos;
 
@@ -101,7 +101,7 @@ void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int
 void Game::cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
     if (drawing && !imguiWindows->io.WantCaptureMouse) {
         //std::cout << xpos << " " << ypos << std::endl;
-        ypos = ypos - (window_height - (canva.height));
+        ypos = ypos - (window_height - (canva.height)*canva.zoom);
         xpos /= canva.zoom;
         ypos /= canva.zoom;
         

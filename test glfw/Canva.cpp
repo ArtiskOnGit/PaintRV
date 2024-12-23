@@ -18,11 +18,11 @@ void Canva::recursive_fill(int x, int y)
         data[coord_to_indextexture(x, y) * 3 + 1] = (unsigned char)(255 * couleur_pinceau.y);
         data[coord_to_indextexture(x, y) * 3 + 2] = (unsigned char)(255 * couleur_pinceau.z);
 
-        if (0 < x && x < width) {
+        if (0 <= x && x < width) {
             recursive_fill(x - 1, y);
             recursive_fill(x + 1, y);
         }
-        if (0 < y && y < height) {
+        if (0 <= y && y < height) {
             recursive_fill(x , y - 1);
             recursive_fill(x , y + 1);
         }
@@ -66,11 +66,11 @@ void Canva::heap_fill(int x, int y)
             data[coord_to_indextexture(xcurr, ycurr) * 3 + 1] = (unsigned char)(255 * couleur_pinceau.y);
             data[coord_to_indextexture(xcurr, ycurr) * 3 + 2] = (unsigned char)(255 * couleur_pinceau.z);
 
-            if (1 < xcurr && xcurr < width-1) {
+            if (1 <= xcurr && xcurr < width-1) {
                 xq.push(xcurr - 1); yq.push(ycurr);
                 xq.push(xcurr + 1); yq.push(ycurr);
             }
-            if (1 < ycurr && ycurr < height-1) {
+            if (1 <= ycurr && ycurr < height-1) {
                 xq.push(xcurr); yq.push(ycurr - 1);
                 xq.push(xcurr); yq.push(ycurr + 1);
             }
@@ -83,11 +83,12 @@ void Canva::heap_fill(int x, int y)
 
 
 int Canva::coord_to_indextexture(int x, int y) {
+    y = height - y - 1;
     if (x >= width) { x = width-1; }
     if (y >= height) { y =  height - 1; }
     if (x < 0) { x = 0; }
     if (y < 0) { y = 0; }
-    y = height - y - 1;
+    
     assert((x + y * width)*3 < width*height*3);
     return  x + y * width;
 }
