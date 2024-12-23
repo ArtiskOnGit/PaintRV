@@ -83,7 +83,6 @@ void Canva::heap_fill(int x, int y)
 
 
 int Canva::coord_to_indextexture(int x, int y) {
-    y = height - y - 1;
     if (x >= width) { x = width-1; }
     if (y >= height) { y =  height - 1; }
     if (x < 0) { x = 0; }
