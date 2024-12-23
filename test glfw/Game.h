@@ -33,6 +33,7 @@ public:
 	ImguiWindows* imguiWindows;
 	Canva canva;
 	GLFWwindow* window = nullptr;
+	
 	static Game* instance;
 	int init_opengl_glfw();
 	void prepare_vertex();

@@ -34,8 +34,9 @@ int main()
     while (!glfwWindowShouldClose(game.window))
     {
         game.imguiWindows->init_ui();
+        
         shader.use();
-
+        //shader.setFloat("zoom", game.canva.zoom);
 
         //glDrawArrays(GL_TRIANGLES, 0, 3);
 
