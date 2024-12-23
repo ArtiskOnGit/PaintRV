@@ -87,7 +87,7 @@ int Canva::coord_to_indextexture(int x, int y) {
     if (y >= height) { y =  height - 1; }
     if (x < 0) { x = 0; }
     if (y < 0) { y = 0; }
-    y = height - y - 1;
+    //y = height - y - 1;
     assert((x + y * width)*3 < width*height*3);
     return  x + y * width;
 }
