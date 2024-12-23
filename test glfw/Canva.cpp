@@ -18,11 +18,11 @@ void Canva::recursive_fill(int x, int y)
         data[coord_to_indextexture(x, y) * 3 + 1] = (unsigned char)(255 * couleur_pinceau.y);
         data[coord_to_indextexture(x, y) * 3 + 2] = (unsigned char)(255 * couleur_pinceau.z);
 
-        if (0 < x && x < width) {
+        if (0 <= x && x < width) {
             recursive_fill(x - 1, y);
             recursive_fill(x + 1, y);
         }
-        if (0 < y && y < height) {
+        if (0 <= y && y < height) {
             recursive_fill(x , y - 1);
             recursive_fill(x , y + 1);
         }
@@ -50,7 +50,7 @@ void Canva::heap_fill(int x, int y)
             continue;
         }
 
-        // Vérifier si pixel deja visité
+        // Vï¿½rifier si pixel deja visitï¿½
         int index = coord_to_indextexture(xcurr, ycurr);
         if (visited[index]) {
             continue;
@@ -66,11 +66,11 @@ void Canva::heap_fill(int x, int y)
             data[coord_to_indextexture(xcurr, ycurr) * 3 + 1] = (unsigned char)(255 * couleur_pinceau.y);
             data[coord_to_indextexture(xcurr, ycurr) * 3 + 2] = (unsigned char)(255 * couleur_pinceau.z);
 
-            if (1 < xcurr && xcurr < width-1) {
+            if (1 <= xcurr && xcurr < width-1) {
                 xq.push(xcurr - 1); yq.push(ycurr);
                 xq.push(xcurr + 1); yq.push(ycurr);
             }
-            if (1 < ycurr && ycurr < height-1) {
+            if (1 <= ycurr && ycurr < height-1) {
                 xq.push(xcurr); yq.push(ycurr - 1);
                 xq.push(xcurr); yq.push(ycurr + 1);
             }
@@ -83,6 +83,7 @@ void Canva::heap_fill(int x, int y)
 
 
 int Canva::coord_to_indextexture(int x, int y) {
+    y = height - y - 1;
     if (x >= width) { x = width-1; }
     if (y >= height) { y =  height - 1; }
     if (x < 0) { x = 0; }
@@ -90,6 +91,11 @@ int Canva::coord_to_indextexture(int x, int y) {
     //y = height - y - 1;
     assert((x + y * width)*3 < width*height*3);
     return  x + y * width;
+}
+
+void Canva::actualise_viewport()
+{
+    glViewport(0, 0, zoom * width, zoom * height);
 }
 
 void Canva::draw_brush(int xpos_mouse, int ypos_mouse, bool eraser )
@@ -159,7 +165,7 @@ int Canva::new_blank_canva(int width_canva, int height_canva)
     data = nullptr;
     height = height_canva;
     width = width_canva;
-    glViewport(0, 0, width, height);
+    actualise_viewport();
     data = new unsigned char[3 * width * height];
     for (int i = 0; i < 3 * width * height; i++) {
         data[i] = 255;
@@ -188,7 +194,7 @@ int Canva::load_image(const char* filepath)
        
         if (data)
         {
-            glViewport(0, 0, width, height);
+            actualise_viewport();
             std::cout << height << width << std::endl;
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
             glGenerateMipmap(GL_TEXTURE_2D);
