@@ -21,6 +21,7 @@ private:
 	unsigned char ColorToFill[3] = { 255, 255, 255 };
 
 public:
+	bool gomme = false;
 	int tool;
 	int width, height;
 	int nrChannels = 3;
@@ -35,7 +36,8 @@ public:
 
 	void actualise_viewport();
 
-	void draw_brush(int xpos_mouse, int ypos_mouse, bool eraser = false);
+	void dessiner_brosse_carree(int xpos_mouse, int ypos_mouse);
+	void dessiner_brosse_circulaire(int xpos_mouse, int ypos_mouse);
 	void fill(int x, int y);
 	int coord_to_indextexture(int x, int y);
 	void draw_circle(double center_x, double center_y, int radius, bool erase = false);
@@ -44,6 +46,7 @@ public:
 	int new_blank_canva(int width_canva, int height_canva);
 	int load_image(const char* filepath);
 	bool save_image(const char* filepath, int format);
+	void draw_pixel_at(int x, int y, bool use_couleur_pinceau = true, ImVec4 couleur = ImVec4(1.f, 1.f, 1.f, 1.00f));
 
 };
 

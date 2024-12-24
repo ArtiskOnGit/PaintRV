@@ -50,11 +50,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
     
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !imguiWindows->io.WantCaptureMouse) {
-
-        
         drawing = true;
         double xpos, ypos;
-        
         glfwGetCursorPos(window, &xpos, &ypos);
         
        
@@ -69,14 +66,15 @@ void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int
 
         switch (canva.tool)
         {
-        case 0:
+        case -1:
             return;
+        case 0:
+            canva.dessiner_brosse_carree(xpos, ypos);
+            break;
         case 1:
-            canva.draw_brush(xpos, ypos);
+            canva.dessiner_brosse_circulaire(xpos, ypos);
             break;
-        case 2:
-            canva.draw_brush(xpos, ypos, true);
-            break;
+
         case 3:
             canva.fill(xpos, ypos);
             break;
@@ -109,18 +107,18 @@ void Game::cursor_position_callback(GLFWwindow* window, double xpos, double ypos
 
         switch (canva.tool)
         {
-        case 0 :
+        case -1:
             return;
-        case 1 : // interpolation linéaire entre la dernier position de la souris et la position actuelle mix; (x, y, a) retourne : x*(1-a) + y*a
+        case 0: // interpolation linéaire entre la dernier position de la souris et la position actuelle mix; (x, y, a) retourne : x*(1-a) + y*a
             for (int a = 0; a < step_number; a++) {
-                canva.draw_brush(glm::mix(xpos, last_mouse_x, a / step_number), glm::mix(ypos, last_mouse_y, a / step_number));
+                canva.dessiner_brosse_carree(glm::mix(xpos, last_mouse_x, a / step_number), glm::mix(ypos, last_mouse_y, a / step_number));
             }
             last_mouse_x = xpos;
             last_mouse_y = ypos;
-        break;
-        case 2:
+            break;
+        case 1: // interpolation linéaire entre la dernier position de la souris et la position actuelle mix; (x, y, a) retourne : x*(1-a) + y*a
             for (int a = 0; a < step_number; a++) {
-                canva.draw_brush(glm::mix(xpos, last_mouse_x, a / step_number), glm::mix(ypos, last_mouse_y, a / step_number),  true);
+                canva.dessiner_brosse_circulaire(glm::mix(xpos, last_mouse_x, a / step_number), glm::mix(ypos, last_mouse_y, a / step_number));
             }
             last_mouse_x = xpos;
             last_mouse_y = ypos;

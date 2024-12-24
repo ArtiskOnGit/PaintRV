@@ -61,10 +61,7 @@ void Canva::heap_fill(int x, int y)
             && data[coord_to_indextexture(xcurr, ycurr) * 3 + 1] == ColorToFill[1]
             && data[coord_to_indextexture(xcurr, ycurr) * 3 + 2] == ColorToFill[2]) {
 
-            //std::cout << (255 * couleur_pinceau.x) <<std::endl;
-            data[coord_to_indextexture(xcurr, ycurr) * 3] = (unsigned char)(255 * couleur_pinceau.x);
-            data[coord_to_indextexture(xcurr, ycurr) * 3 + 1] = (unsigned char)(255 * couleur_pinceau.y);
-            data[coord_to_indextexture(xcurr, ycurr) * 3 + 2] = (unsigned char)(255 * couleur_pinceau.z);
+            draw_pixel_at(xcurr, ycurr);
 
             if (1 <= xcurr && xcurr < width-1) {
                 xq.push(xcurr - 1); yq.push(ycurr);
@@ -97,21 +94,38 @@ void Canva::actualise_viewport()
     glViewport(0, 0, zoom * width, zoom * height);
 }
 
-void Canva::draw_brush(int xpos_mouse, int ypos_mouse, bool eraser )
+void Canva::dessiner_brosse_carree(int xpos_mouse, int ypos_mouse)
 {
     ImVec4 couleur;
-    if (eraser) { couleur = couleur_eraser; }
-    else { couleur = couleur_pinceau; }
+    //if (eraser) { couleur = couleur_eraser; }
+    //else { couleur = couleur_pinceau; }
     for (int i = -size / 2; i < size / 2; i++) {
         for (int j = -size / 2; j < size / 2; j++) {
-
-            data[coord_to_indextexture(xpos_mouse + i, ypos_mouse + j) * 3] = (unsigned char)(255 * couleur.x);
+            draw_pixel_at(xpos_mouse + i, ypos_mouse + j, !gomme);
+            /*data[coord_to_indextexture(xpos_mouse + i, ypos_mouse + j) * 3] = (unsigned char)(255 * couleur.x);
             data[coord_to_indextexture(xpos_mouse + i, ypos_mouse + j) * 3 + 1] = (unsigned char)(255 * couleur.y);
-            data[coord_to_indextexture(xpos_mouse + i, ypos_mouse + j) * 3 + 2] = (unsigned char)(255 * couleur.z);
+            data[coord_to_indextexture(xpos_mouse + i, ypos_mouse + j) * 3 + 2] = (unsigned char)(255 * couleur.z);*/
         }
     }
 }
 
+
+void Canva::dessiner_brosse_circulaire(int xpos_mouse, int ypos_mouse)
+{
+    ImVec4 couleur;
+    //if (eraser) { couleur = couleur_eraser; }
+    //else { couleur = couleur_pinceau; }
+    for (int i = -size ; i < size ; i++) {
+        for (int j = -size ; j < size ; j++) {
+            if (i * i + j * j <= size * size) {
+                draw_pixel_at(xpos_mouse + i, ypos_mouse + j, !gomme);
+            }
+            /*data[coord_to_indextexture(xpos_mouse + i, ypos_mouse + j) * 3] = (unsigned char)(255 * couleur.x);
+            data[coord_to_indextexture(xpos_mouse + i, ypos_mouse + j) * 3 + 1] = (unsigned char)(255 * couleur.y);
+            data[coord_to_indextexture(xpos_mouse + i, ypos_mouse + j) * 3 + 2] = (unsigned char)(255 * couleur.z);*/
+        }
+    }
+}
 
 
 void Canva::fill(int x, int y) {
@@ -139,9 +153,7 @@ void Canva::draw_circle(double center_x, double center_y, int radius, bool erase
 
                 //modifie la couleur des pixels
                 if (px >= 0 && px < width && py >= 0 && py < height) {
-                    data[coord_to_indextexture(px, py) * 3] = (unsigned char)(255 * couleur_pinceau.x);
-                    data[coord_to_indextexture(px, py) * 3 + 1] = (unsigned char)(255 * couleur_pinceau.y);
-                    data[coord_to_indextexture(px, py) * 3 + 2] = (unsigned char)(255 * couleur_pinceau.z);
+                    draw_pixel_at(px, py);
 
                 }
             }
@@ -215,4 +227,18 @@ bool Canva::save_image(const char* filepath, int format)
         stbi_write_jpg(filepath, width, height, nrChannels, data, 100);
     }
     return true;
+}
+
+void Canva::draw_pixel_at(int x, int y, bool use_couleur_pinceau, ImVec4 couleur)
+{
+    if (use_couleur_pinceau) {
+        data[coord_to_indextexture(x, y) * 3] = (unsigned char)(255 * couleur_pinceau.x);
+        data[coord_to_indextexture(x, y) * 3 + 1] = (unsigned char)(255 * couleur_pinceau.y);
+        data[coord_to_indextexture(x, y) * 3 + 2] = (unsigned char)(255 * couleur_pinceau.z);
+    }
+    else {
+        data[coord_to_indextexture(x, y) * 3] = (unsigned char)(255 * couleur.x);
+        data[coord_to_indextexture(x, y) * 3 + 1] = (unsigned char)(255 * couleur.y);
+        data[coord_to_indextexture(x, y) * 3 + 2] = (unsigned char)(255 * couleur.z);
+    }
 }

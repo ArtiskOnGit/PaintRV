@@ -23,13 +23,15 @@ void ImguiWindows::init_ui()
     ImGui::Begin("Tools!");                          // Create a window called "Hello, world!" and append into it.
     ImGui::Text("This is the tools windows.");
     //tool selector
-    ImGui::RadioButton("No tool", &canva->tool, 0);
-    ImGui::RadioButton("Brush", &canva->tool, 1); ImGui::SameLine();
-    ImGui::RadioButton("Eraser", &canva->tool, 2); 
-    ImGui::RadioButton("Fill", &canva->tool, 3);
+    ImGui::RadioButton("Pas d'outil", &canva->tool, -1);
+    ImGui::RadioButton("Brosse carrée", &canva->tool, 0); ImGui::SameLine();
+    ImGui::RadioButton("Brosse circulaire", &canva->tool, 1); ImGui::SameLine();
+    ImGui::Checkbox("Gomme", &canva->gomme);
+    //ImGui::RadioButton("Gomme", &canva->tool, 2); 
+    ImGui::RadioButton("Remplir", &canva->tool, 3);
     ImGui::RadioButton("Pipette", &canva->tool, 4);
-    ImGui::RadioButton("Circle", &canva->tool, 5);
-    ImGui::SliderInt("Taille", &(canva->size), 1, 100);
+    ImGui::RadioButton("Cercle", &canva->tool, 5);
+    ImGui::SliderInt("Taille", &(canva->size), 1, 200);
     //ImGui::SliderFloat("Taille", &size, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
     ImGui::ColorEdit3("Couleur pinceau", (float*)&(canva->couleur_pinceau)); // Edit 3 floats representing a color
 
