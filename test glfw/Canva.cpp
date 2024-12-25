@@ -91,7 +91,7 @@ int Canva::coord_to_indextexture(int x, int y) {
 
 void Canva::actualise_viewport()
 {
-    glViewport(0, 0, zoom * width, zoom * height);
+    glViewport(0, 0, (int) (zoom * width), (int) (zoom * height));
 }
 
 void Canva::dessiner_brosse_carree(int xpos_mouse, int ypos_mouse)
@@ -141,7 +141,7 @@ void Canva::fill(int x, int y) {
 }
 
 
-void Canva::draw_circle(double center_x, double center_y, int radius, bool erase) {
+void Canva::draw_circle(int center_x, int center_y, int radius, bool erase) {
     
 
     // Parcours de la zone autour du centre 

@@ -22,8 +22,9 @@ private:
 
 public:
 	bool gomme = false;
-	int tool;
-	int width, height;
+	int tool = 0;
+	int width = 550;
+	int height = 550;
 	int nrChannels = 3;
 	ImVec4 couleur_pinceau = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 	ImVec4 couleur_eraser = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
@@ -32,7 +33,7 @@ public:
 	float zoom = 1.0f;
 
 	Canva() {}
-	unsigned char* data;
+	unsigned char* data = nullptr;
 
 	void actualise_viewport();
 
@@ -40,7 +41,7 @@ public:
 	void dessiner_brosse_circulaire(int xpos_mouse, int ypos_mouse);
 	void fill(int x, int y);
 	int coord_to_indextexture(int x, int y);
-	void draw_circle(double center_x, double center_y, int radius, bool erase = false);
+	void draw_circle(int center_x, int center_y, int radius, bool erase = false);
 	void pipette(int x, int y);
 
 	int new_blank_canva(int width_canva, int height_canva);
