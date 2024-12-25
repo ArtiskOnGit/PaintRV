@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 
 #include <iostream>
+#include <vector>
 
 #include <queue>
 #include <utility>
@@ -11,7 +12,8 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-#include "Canva.h"
+
+#include "Calque.h"
 
 
 class Canva
@@ -35,9 +37,9 @@ public:
 
 	Canva() {}
 	bool has_alpha = false;
-	unsigned char** calques = nullptr; // tableau de calques
-	unsigned char* data = nullptr; //sera un pointeur vers le calque courant
-	unsigned int calque_courant = 0;
+	std::vector<Calque*> calques; // tableau de calques
+	unsigned char* data = nullptr; // sera un pointeur vers le calque courant
+	unsigned int calque_selectionne = 0;
 	unsigned int nombre_calques = 0;
 
 	

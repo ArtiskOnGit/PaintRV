@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\..\..\Dev\glad\src\glad.c" />
+    <ClCompile Include="Calque.cpp" />
     <ClCompile Include="Canva.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="ImguiWindows.cpp" />
@@ -156,9 +157,11 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="test glfw.cpp" />
+    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CallBacks.h" />
+    <ClInclude Include="Calque.h" />
     <ClInclude Include="Canva.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="ImguiWindows.h" />
@@ -174,6 +177,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="stb_image_write.h" />
+    <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="container.jpg" />

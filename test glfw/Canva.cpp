@@ -126,21 +126,13 @@ void Canva::dessiner_brosse_carree(int xpos_mouse, int ypos_mouse)
 }
 
 
-void Canva::dessiner_brosse_circulaire(int xpos_mouse, int ypos_mouse)
+void Canva::dessiner_brosse_circulaire(int xpos_mouse, int ypos_mouse, int size)
 {
-    ImVec4 couleur;
+
     //if (eraser) { couleur = couleur_eraser; }
     //else { couleur = couleur_pinceau; }
-    for (int i = -size ; i < size ; i++) {
-        for (int j = -size ; j < size ; j++) {
-            if (i * i + j * j <= size * size) {
-                draw_pixel_at(xpos_mouse + i, ypos_mouse + j, !gomme);
-            }
-            /*data[coord_to_indextexture(xpos_mouse + i, ypos_mouse + j) * 3] = (unsigned char)(255 * couleur.x);
-            data[coord_to_indextexture(xpos_mouse + i, ypos_mouse + j) * 3 + 1] = (unsigned char)(255 * couleur.y);
-            data[coord_to_indextexture(xpos_mouse + i, ypos_mouse + j) * 3 + 2] = (unsigned char)(255 * couleur.z);*/
-        }
-    }
+    calques[calque_selectionne]->texture->dessiner_brosse_circulaire(xpos_mouse, ypos_mouse, size);
+    
 }
 
 
@@ -187,6 +179,7 @@ void Canva::pipette(int x, int y)
 int Canva::new_blank_canva(int width_canva, int height_canva, bool has_alpha_canva)
 {
     //create blank canva
+    calques.clear();
     
     if (data) { delete[] data; }
     data = nullptr;
@@ -196,29 +189,17 @@ int Canva::new_blank_canva(int width_canva, int height_canva, bool has_alpha_can
         nr_channel = NR_CHANNEL_WITH_ALPHA;
     }
     else { nr_channel = NR_CHANNEL_WITHOUT_ALPHA; }
+
+    Calque* cal = new Calque(width_canva, height_canva, nr_channel);
     
-    data = new unsigned char[nr_channel * width_canva * height_canva];
-    for (int i = 0; i < nr_channel * width * height; i++) {
-        data[i] = 255;
-    }
-    
-    std::cout <<"size of new frame : " << height << "x" << width  << "x" << nr_channel << std::endl;
-    if (data)
-    {
+    if (cal) {
+        calques.push_back(cal);
         height = height_canva;
         width = width_canva;
-        has_alpha = has_alpha_canva;
-        nrChannels = nr_channel;
         nombre_calques = 1;
         actualise_viewport();
         actualise_texture();
-
     }
-    else
-    {
-        std::cout << "Failed to load texture" << std::endl;
-        return -1;
-    }    // gen texture
 }
 
 int Canva::load_image(const char* filepath)
