@@ -35,7 +35,14 @@ void ImguiWindows::init_ui()
     //ImGui::SliderFloat("Taille", &size, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
     ImGui::ColorEdit3("Couleur pinceau", (float*)&(canva->couleur_pinceau)); // Edit 3 floats representing a color
 
-
+    ImGui::Separator();
+    ImGui::Text("Calques :");
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, ImGui::GetStyleColorVec4(ImGuiCol_FrameBg));
+    if (ImGui::BeginChild("ResizableChild", ImVec2(-FLT_MIN, ImGui::GetTextLineHeightWithSpacing() * 8), ImGuiChildFlags_Borders | ImGuiChildFlags_ResizeY))
+        for (int n = 0; n < 10; n++)
+            ImGui::Text("Calque %04d", n);
+    ImGui::PopStyleColor();
+    ImGui::EndChild();
 
     ImGui::End();
 
