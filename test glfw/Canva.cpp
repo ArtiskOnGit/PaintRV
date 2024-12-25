@@ -31,19 +31,19 @@ void Canva::recursive_fill(int x, int y)
 
 void Canva::heap_fill(int x, int y)
 {
-    std::queue<int> xq;
-    std::queue<int> yq;
-    std::vector<bool> visited(width * height, false);
-    xq.push(x);
-    yq.push(y);
-    int xcurr;
-    int ycurr;
-    while(!xq.empty()) {
 
-        xcurr = xq.front();
-        ycurr = yq.front();
-        xq.pop();
-        yq.pop();
+    std::queue<std::pair<int, int>> q;
+    std::vector<bool> visited(width * height, false);
+    q.push({ x, y });
+
+    std::pair<int, int> curr;
+    while(!q.empty()) {
+
+
+        curr = q.front();
+        int xcurr = curr.first;
+        int ycurr = curr.second;
+        q.pop();
 
         
         if (xcurr < 0 || xcurr >= width || ycurr < 0 || ycurr >= height) {
@@ -57,19 +57,21 @@ void Canva::heap_fill(int x, int y)
         }
         visited[index] = true;
 
-        if (data[coord_to_indextexture(xcurr, ycurr) * 3] == ColorToFill[0]
-            && data[coord_to_indextexture(xcurr, ycurr) * 3 + 1] == ColorToFill[1]
-            && data[coord_to_indextexture(xcurr, ycurr) * 3 + 2] == ColorToFill[2]) {
+        if (data[index * 3] == ColorToFill[0]
+            && data[index * 3 + 1] == ColorToFill[1]
+            && data[index * 3 + 2] == ColorToFill[2]) {
 
             draw_pixel_at(xcurr, ycurr);
 
             if (1 <= xcurr && xcurr < width-1) {
-                xq.push(xcurr - 1); yq.push(ycurr);
-                xq.push(xcurr + 1); yq.push(ycurr);
+                q.push({ xcurr - 1 , ycurr });
+                q.push({ xcurr + 1 , ycurr });
+
             }
             if (1 <= ycurr && ycurr < height-1) {
-                xq.push(xcurr); yq.push(ycurr - 1);
-                xq.push(xcurr); yq.push(ycurr + 1);
+                q.push({ xcurr , ycurr - 1 });
+                q.push({ xcurr , ycurr + 1 });
+
             }
 
         }
