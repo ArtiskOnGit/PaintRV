@@ -6,17 +6,23 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
+const int NR_CHANNEL_WITH_ALPHA = 4;
+const int NR_CHANNEL_WITHOUT_ALPHA = 3;
+
+
+
+
 //marche pas pour des grandes surfaces
 void Canva::recursive_fill(int x, int y)
 {
-    if (data[coord_to_indextexture(x, y) * 3] == ColorToFill[0]
-        && data[coord_to_indextexture(x, y) * 3 + 1] == ColorToFill[1]
-        && data[coord_to_indextexture(x, y) * 3 + 2] == ColorToFill[2]) {
+    if (data[coord_to_indextexture(x, y) * nrChannels] == ColorToFill[0]
+        && data[coord_to_indextexture(x, y) * nrChannels + 1] == ColorToFill[1]
+        && data[coord_to_indextexture(x, y) * nrChannels + 2] == ColorToFill[2]) {
 
         //std::cout << (255 * couleur_pinceau.x) <<std::endl;
-        data[coord_to_indextexture(x , y ) * 3  ] = (unsigned char)(255 * couleur_pinceau.x);
-        data[coord_to_indextexture(x, y) * 3 + 1] = (unsigned char)(255 * couleur_pinceau.y);
-        data[coord_to_indextexture(x, y) * 3 + 2] = (unsigned char)(255 * couleur_pinceau.z);
+        data[coord_to_indextexture(x , y ) * nrChannels  ] = (unsigned char)(255 * couleur_pinceau.x);
+        data[coord_to_indextexture(x, y) * nrChannels + 1] = (unsigned char)(255 * couleur_pinceau.y);
+        data[coord_to_indextexture(x, y) * nrChannels + 2] = (unsigned char)(255 * couleur_pinceau.z);
 
         if (0 <= x && x < width) {
             recursive_fill(x - 1, y);
@@ -57,9 +63,9 @@ void Canva::heap_fill(int x, int y)
         }
         visited[index] = true;
 
-        if (data[index * 3] == ColorToFill[0]
-            && data[index * 3 + 1] == ColorToFill[1]
-            && data[index * 3 + 2] == ColorToFill[2]) {
+        if (data[coord_to_indextexture(xcurr, ycurr) * nrChannels] == ColorToFill[0]
+            && data[coord_to_indextexture(xcurr, ycurr) * nrChannels + 1] == ColorToFill[1]
+            && data[coord_to_indextexture(xcurr, ycurr) * nrChannels + 2] == ColorToFill[2]) {
 
             draw_pixel_at(xcurr, ycurr);
 
@@ -94,6 +100,16 @@ int Canva::coord_to_indextexture(int x, int y) {
 void Canva::actualise_viewport()
 {
     glViewport(0, 0, (int) (zoom * width), (int) (zoom * height));
+}
+
+void Canva::actualise_texture()
+{
+    if (has_alpha) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    }
+    else {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    }
 }
 
 void Canva::dessiner_brosse_carree(int xpos_mouse, int ypos_mouse)
@@ -131,9 +147,9 @@ void Canva::dessiner_brosse_circulaire(int xpos_mouse, int ypos_mouse)
 
 
 void Canva::fill(int x, int y) {
-    ColorToFill[0] = data[coord_to_indextexture(x, y) * 3];
-    ColorToFill[1] = data[coord_to_indextexture(x, y) * 3 + 1];
-    ColorToFill[2] = data[coord_to_indextexture(x, y) * 3 + 2];
+    ColorToFill[0] = data[coord_to_indextexture(x, y) * nrChannels];
+    ColorToFill[1] = data[coord_to_indextexture(x, y) * nrChannels + 1];
+    ColorToFill[2] = data[coord_to_indextexture(x, y) * nrChannels + 2];
     //std::cout << "ColorToFill: "
         //<< (int)ColorToFill[0] << " "
         //<< (int)ColorToFill[1] << " "
@@ -165,30 +181,40 @@ void Canva::draw_circle(int center_x, int center_y, int radius, bool erase) {
 
 void Canva::pipette(int x, int y)
 {
-    couleur_pinceau.x = ((float) data[coord_to_indextexture(x, y) * 3] + 0)/255;
-    couleur_pinceau.y = ((float) data[coord_to_indextexture(x, y) * 3 + 1])/255;
-    couleur_pinceau.z = ((float) data[coord_to_indextexture(x, y) * 3 + 2])/255;
+    couleur_pinceau.x = ((float) data[coord_to_indextexture(x, y) * nrChannels] + 0)/255;
+    couleur_pinceau.y = ((float) data[coord_to_indextexture(x, y) * nrChannels + 1])/255;
+    couleur_pinceau.z = ((float) data[coord_to_indextexture(x, y) * nrChannels + 2])/255;
 }
 
-int Canva::new_blank_canva(int width_canva, int height_canva)
+int Canva::new_blank_canva(int width_canva, int height_canva, bool has_alpha_canva)
 {
     //create blank canva
     
     if (data) { delete[] data; }
     data = nullptr;
-    height = height_canva;
-    width = width_canva;
-    actualise_viewport();
-    data = new unsigned char[3 * width * height];
-    for (int i = 0; i < 3 * width * height; i++) {
+
+    int nr_channel;
+    if (has_alpha_canva) {
+        nr_channel = NR_CHANNEL_WITH_ALPHA;
+    }
+    else { nr_channel = NR_CHANNEL_WITHOUT_ALPHA; }
+    
+    data = new unsigned char[nr_channel * width_canva * height_canva];
+    for (int i = 0; i < nr_channel * width * height; i++) {
         data[i] = 255;
     }
     
-    std::cout <<"size of new frame : " << height << " " << width << std::endl;
+    std::cout <<"size of new frame : " << height << "x" << width  << "x" << nr_channel << std::endl;
     if (data)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
+        height = height_canva;
+        width = width_canva;
+        has_alpha = has_alpha_canva;
+        nrChannels = nr_channel;
+        nombre_calques = 1;
+        actualise_viewport();
+        actualise_texture();
+
     }
     else
     {
@@ -203,14 +229,21 @@ int Canva::load_image(const char* filepath)
         //load an image
         if (data) { delete[] data; }
         data = nullptr;
-        data = stbi_load(filepath, &(width), &(height), &(nrChannels), 0);
+        int image_width, image_height = 0;
+        int image_channel = 3;
+        data = stbi_load(filepath, &(image_width), &(image_height), &(image_channel), 0);
        
         if (data)
         {
+            height = image_height;
+            width = image_width;
+            has_alpha = (image_channel==NR_CHANNEL_WITH_ALPHA);
+            nrChannels = image_channel;
+            nombre_calques = 1;
+
             actualise_viewport();
-            std::cout << height << width << std::endl;
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-            glGenerateMipmap(GL_TEXTURE_2D);
+            actualise_texture();
+            //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         }
         else
         {
@@ -234,13 +267,16 @@ bool Canva::save_image(const char* filepath, int format)
 void Canva::draw_pixel_at(int x, int y, bool use_couleur_pinceau, ImVec4 couleur)
 {
     if (use_couleur_pinceau) {
-        data[coord_to_indextexture(x, y) * 3] = (unsigned char)(255 * couleur_pinceau.x);
-        data[coord_to_indextexture(x, y) * 3 + 1] = (unsigned char)(255 * couleur_pinceau.y);
-        data[coord_to_indextexture(x, y) * 3 + 2] = (unsigned char)(255 * couleur_pinceau.z);
+        data[coord_to_indextexture(x, y) * nrChannels] = (unsigned char)(255 * couleur_pinceau.x);
+        data[coord_to_indextexture(x, y) * nrChannels + 1] = (unsigned char)(255 * couleur_pinceau.y);
+        data[coord_to_indextexture(x, y) * nrChannels + 2] = (unsigned char)(255 * couleur_pinceau.z);
+        if (has_alpha) { data[coord_to_indextexture(x, y) * nrChannels + 3] = (unsigned char)(255 * couleur_pinceau.w); }
     }
     else {
-        data[coord_to_indextexture(x, y) * 3] = (unsigned char)(255 * couleur.x);
-        data[coord_to_indextexture(x, y) * 3 + 1] = (unsigned char)(255 * couleur.y);
-        data[coord_to_indextexture(x, y) * 3 + 2] = (unsigned char)(255 * couleur.z);
+        data[coord_to_indextexture(x, y) * nrChannels] = (unsigned char)(255 * couleur.x);
+        data[coord_to_indextexture(x, y) * nrChannels + 1] = (unsigned char)(255 * couleur.y);
+        data[coord_to_indextexture(x, y) * nrChannels + 2] = (unsigned char)(255 * couleur.z);
+        if (has_alpha) { data[coord_to_indextexture(x, y) * nrChannels + 3] = (unsigned char)(255 * couleur.w); }
     }
+
 }

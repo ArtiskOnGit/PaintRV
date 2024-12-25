@@ -35,7 +35,14 @@ void ImguiWindows::init_ui()
     //ImGui::SliderFloat("Taille", &size, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
     ImGui::ColorEdit3("Couleur pinceau", (float*)&(canva->couleur_pinceau)); // Edit 3 floats representing a color
 
-
+    ImGui::Separator();
+    ImGui::Text("Calques :");
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, ImGui::GetStyleColorVec4(ImGuiCol_FrameBg));
+    if (ImGui::BeginChild("ResizableChild", ImVec2(-FLT_MIN, ImGui::GetTextLineHeightWithSpacing() * 8), ImGuiChildFlags_Borders | ImGuiChildFlags_ResizeY))
+        for (int n = 0; n < 10; n++)
+            ImGui::Text("Calque %04d", n);
+    ImGui::PopStyleColor();
+    ImGui::EndChild();
 
     ImGui::End();
 
@@ -69,7 +76,7 @@ void ImguiWindows::NewFileWindow()
 {
     
     
-	bool window_contents_visible = ImGui::Begin("Example: Documents", &showNewFileWindow);
+	bool window_contents_visible = ImGui::Begin("New file", &showNewFileWindow);
     if (!window_contents_visible)
     {
         printf("Ici\n");
@@ -79,8 +86,9 @@ void ImguiWindows::NewFileWindow()
     ImGui::Text("Entrez la taille du canva desiree : ");
     ImGui::DragInt("X", &(new_canva_width), 1.f);
     ImGui::DragInt("Y", &(new_canva_height), 1.f);
+    ImGui::Checkbox("Channel Apha ?", &(new_canva_has_alpha));
     if (ImGui::Button("Valider")) {
-        canva->new_blank_canva(new_canva_width, new_canva_height);
+        canva->new_blank_canva(new_canva_width, new_canva_height, new_canva_has_alpha);
         showNewFileWindow = false;
     }
 

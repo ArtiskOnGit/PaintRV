@@ -27,7 +27,7 @@ int main()
     game.prepare_vertex();
     //ouvrir la texture, les vertex
     //game.load_image("container.bmp"); //methode archaïque horrible
-    game.canva.new_blank_canva(550, 550);
+    game.canva.new_blank_canva(550, 550, false);
 
     Shader shader("C:\\Users\\Alexandre\\Documents\\cours\\tries\\P1RV\\PaintRV\\test glfw\\vertex.vs", "C:\\Users\\Alexandre\\Documents\\cours\\tries\\P1RV\\PaintRV\\test glfw\\fragment.fs");
 
