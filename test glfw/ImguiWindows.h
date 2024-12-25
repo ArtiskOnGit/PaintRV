@@ -15,6 +15,7 @@ private :
 	Canva* canva = nullptr;
 	int new_canva_width = 550;
 	int new_canva_height = 550;
+	bool new_canva_has_alpha = false;
 	
 public:
 	ImGuiIO io;

@@ -86,8 +86,8 @@ void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int
             break;
         }
 
-
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, canva.width, canva.height, 0, GL_RGB, GL_UNSIGNED_BYTE, canva.data);
+        canva.actualise_texture();
+        //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, canva.width, canva.height, 0, GL_RGB, GL_UNSIGNED_BYTE, canva.data);
         //glGenerateMipmap(GL_TEXTURE_2D);
     }
     else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
@@ -124,8 +124,8 @@ void Game::cursor_position_callback(GLFWwindow* window, double xpos, double ypos
             last_mouse_y = ypos;
             break;
         }
-
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, canva.width, canva.height, 0, GL_RGB, GL_UNSIGNED_BYTE, canva.data);
+        canva.actualise_texture();
+        //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, canva.width, canva.height, 0, GL_RGB, GL_UNSIGNED_BYTE, canva.data);
         //glGenerateMipmap(GL_TEXTURE_2D);
     }
 }
