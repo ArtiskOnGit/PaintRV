@@ -76,7 +76,7 @@ void ImguiWindows::NewFileWindow()
 {
     
     
-	bool window_contents_visible = ImGui::Begin("Example: Documents", &showNewFileWindow);
+	bool window_contents_visible = ImGui::Begin("New file", &showNewFileWindow);
     if (!window_contents_visible)
     {
         printf("Ici\n");
@@ -86,8 +86,9 @@ void ImguiWindows::NewFileWindow()
     ImGui::Text("Entrez la taille du canva desiree : ");
     ImGui::DragInt("X", &(new_canva_width), 1.f);
     ImGui::DragInt("Y", &(new_canva_height), 1.f);
+    ImGui::Checkbox("Channel Apha ?", &(new_canva_has_alpha));
     if (ImGui::Button("Valider")) {
-        canva->new_blank_canva(new_canva_width, new_canva_height);
+        canva->new_blank_canva(new_canva_width, new_canva_height, new_canva_has_alpha);
         showNewFileWindow = false;
     }
 
