@@ -200,7 +200,7 @@ int Canva::new_blank_canva(int width_canva, int height_canva, bool has_alpha_can
     else { nr_channel = NR_CHANNEL_WITHOUT_ALPHA; }
     
     data = new unsigned char[nr_channel * width_canva * height_canva];
-    for (int i = 0; i < nr_channel * width * height; i++) {
+    for (int i = 0; i < nr_channel * width_canva * height_canva; i++) {
         data[i] = 255;
     }
     
