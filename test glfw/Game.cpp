@@ -86,7 +86,7 @@ void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int
             break;
         }
 
-        canva.actualise_texture();
+        //canva.actualise_texture();
         //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, canva.width, canva.height, 0, GL_RGB, GL_UNSIGNED_BYTE, canva.data);
         //glGenerateMipmap(GL_TEXTURE_2D);
     }
@@ -124,7 +124,7 @@ void Game::cursor_position_callback(GLFWwindow* window, double xpos, double ypos
             last_mouse_y = ypos;
             break;
         }
-        canva.actualise_texture();
+        //canva.actualise_texture();
         //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, canva.width, canva.height, 0, GL_RGB, GL_UNSIGNED_BYTE, canva.data);
         //glGenerateMipmap(GL_TEXTURE_2D);
     }

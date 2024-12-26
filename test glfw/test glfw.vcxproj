@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\..\..\Dev\glad\src\glad.c" />
+    <ClCompile Include="Calque.cpp" />
     <ClCompile Include="Canva.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="ImguiWindows.cpp" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CallBacks.h" />
+    <ClInclude Include="Calque.h" />
     <ClInclude Include="Canva.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="ImguiWindows.h" />
