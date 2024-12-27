@@ -98,8 +98,10 @@ void Canva::draw_circle(int center_x, int center_y, int radius, bool erase) {
 void Canva::pipette(int x, int y)
 {
     u32_couleur_pinceau = (calques[calque_selectionne]->getR(x, y) >> IM_COL32_R_SHIFT & 0xff);
-    u32_couleur_pinceau |= (calques[calque_selectionne]->getG(x, y) >> IM_COL32_G_SHIFT & 0xff);
-    u32_couleur_pinceau |= (calques[calque_selectionne]->getB(x, y) >> IM_COL32_B_SHIFT & 0xff);
+    u32_couleur_pinceau |= (calques[calque_selectionne]->getG(x, y) << IM_COL32_G_SHIFT);
+    u32_couleur_pinceau |= (calques[calque_selectionne]->getB(x, y) << IM_COL32_B_SHIFT);
+    if (calques[calque_selectionne]->has_alpha) { u32_couleur_pinceau |= (calques[calque_selectionne]->getA(x, y) << IM_COL32_A_SHIFT); }
+    else { u32_couleur_pinceau |= (255 << IM_COL32_A_SHIFT); }
 }
 
 int Canva::new_blank_canva(int width_canva, int height_canva, bool has_alpha_canva)
