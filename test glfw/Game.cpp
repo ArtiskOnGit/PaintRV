@@ -3,7 +3,6 @@
 
 
 //unsigned char* data;
-unsigned int texture;
 
 unsigned int VBO, VAO, EBO;
 
@@ -238,20 +237,7 @@ void Game::prepare_vertex()
     glEnableVertexAttribArray(1);
 
 
-    glGenTextures(1, &texture);
-
-    glBindTexture(GL_TEXTURE_2D, texture);
-    //changer les parametres du texture2D
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set texture filtering parameters
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    //tell opengl what to do with the alphas channels
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+   
 }
 
 
@@ -265,10 +251,17 @@ int Game::render()
     glClear(GL_COLOR_BUFFER_BIT);
 
 
-    glBindTexture(GL_TEXTURE_2D, texture);
+    
 
     glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    for (int i = 0; i < canva.calques.size(); i++) {
+        if (canva.calques[i]->activated) {
+            glBindTexture(GL_TEXTURE_2D, canva.calques[i]->texture);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
+    }
+    
+    
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

@@ -133,7 +133,7 @@ int Canva::new_blank_canva(int width_canva, int height_canva, bool has_alpha_can
     }
     else
     {
-        std::cout << "Failed to create new texture" << std::endl;
+        std::cout << "Failed to create new canva" << std::endl;
         return -1;
     }    // gen texture
 
@@ -167,6 +167,33 @@ int Canva::load_image(const char* filepath)
             return -1;
         }    // gen texture
     }
+}
+
+int Canva::nouveau_calque()
+{
+
+    int nr_channel;
+    if (has_alpha) {
+        nr_channel = NR_CHANNEL_WITH_ALPHA;
+    }
+    else { nr_channel = NR_CHANNEL_WITHOUT_ALPHA; }
+
+    Calque* new_cal = new Calque(width, height, nr_channel);
+
+    if (new_cal != nullptr) {
+        calques.push_back(new_cal);
+        nombre_calques += 1;
+        actualise_viewport();
+        calques[nombre_calques-1]->actualise_texture();
+        //nrChannels = nr_channel;
+    }
+    else
+    {
+        std::cout << "Failed to create new calque" << std::endl;
+        return -1;
+    }    // gen texture
+
+    return 0;
 }
 
 bool Canva::save_image(const char* filepath, int format)

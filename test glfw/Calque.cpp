@@ -12,7 +12,8 @@ const int NR_CHANNEL_WITH_ALPHA = 4;
 const int NR_CHANNEL_WITHOUT_ALPHA = 3;
 
 Calque::Calque(int new_width, int new_height, int new_channels)
-{
+{   
+    init_texture();
 	data = new unsigned char[new_width * new_height * new_channels];
 	for (int i = 0; i < new_channels * new_width * new_height; i++) {
 		data[i] = 255;
@@ -29,6 +30,7 @@ Calque::Calque(int new_width, int new_height, int new_channels)
 
 Calque::Calque(const char* filepath)
 {
+    init_texture();
     if (data) { delete[] data; }
     data = nullptr;
     int image_width, image_height = 0;
@@ -48,6 +50,24 @@ Calque::Calque(const char* filepath)
     {
         std::cout << "Failed to load image" << std::endl;
     }   
+}
+
+void Calque::init_texture()
+{
+    glGenTextures(1, &texture);
+
+    glBindTexture(GL_TEXTURE_2D, texture);
+    //changer les parametres du texture2D
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // set texture filtering parameters
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    //tell opengl what to do with the alphas channels
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Calque::fill(int x, int y, ImU32 couleur)
@@ -125,6 +145,7 @@ void Calque::draw_pixel_at(int x, int y,const ImU32& couleur)
 
 void Calque::actualise_texture()
 {
+    glBindTexture(GL_TEXTURE_2D, texture);
     if (has_alpha) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     }

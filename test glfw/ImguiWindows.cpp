@@ -56,11 +56,22 @@ void ImguiWindows::init_ui()
     ColorPicker4U32("Couleur pinceau", &canva->u32_couleur_pinceau); // Edit 3 floats representing a color
 
     ImGui::Separator();
-    ImGui::Text("Calques :");
+    ImGui::Text("Calques :"); ImGui::SameLine();
+    if (ImGui::Button("Nouveau calque")) {
+        canva->nouveau_calque();
+    }
     ImGui::PushStyleColor(ImGuiCol_ChildBg, ImGui::GetStyleColorVec4(ImGuiCol_FrameBg));
     if (ImGui::BeginChild("ResizableChild", ImVec2(-FLT_MIN, ImGui::GetTextLineHeightWithSpacing() * 8), ImGuiChildFlags_Borders | ImGuiChildFlags_ResizeY))
-        for (int n = 0; n < 10; n++)
-            ImGui::Text("Calque %04d", n);
+        for (int n = 0; n < canva->nombre_calques; n++)
+        {
+            
+            //ImGui::Text("Calque %04d", n); ImGui::SameLine();
+            ImGui::PushID(n);
+            ImGui::InputText("##nom", (canva->calques[n]->nom), 128); ImGui::SameLine();
+            ImGui::RadioButton("##radioButton", &canva->calque_selectionne, n); ImGui::SameLine();
+            ImGui::Checkbox("Hide", &canva->calques[n]->activated);
+            ImGui::PopID();
+        }
     ImGui::PopStyleColor();
     ImGui::EndChild();
 

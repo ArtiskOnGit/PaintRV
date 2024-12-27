@@ -16,11 +16,16 @@
 class Calque
 {
 private:
+	
 public:
+	unsigned int texture;
+	char nom[128] = "Calque";
 	Calque(int new_width, int new_height, int new_channels);
 	Calque(const char* filepath);
+	void init_texture();
 	~Calque() { delete[]data;}
 	bool has_alpha = false;
+	bool activated = true;
 	int width = 550;
 	int height = 550;
 	int nrChannels = 3;

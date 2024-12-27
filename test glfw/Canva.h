@@ -39,8 +39,8 @@ public:
 	bool has_alpha = false;
 	std::vector<Calque*> calques; // tableau de calques
 	//unsigned char* data = nullptr; //sera un pointeur vers le calque courant
-	unsigned int calque_selectionne = 0;
-	unsigned int nombre_calques = 0;
+	int calque_selectionne = 0;
+	int nombre_calques = 0;
 
 	
 
@@ -56,6 +56,7 @@ public:
 
 	int new_blank_canva(int width_canva, int height_canva, bool has_alpha);
 	int load_image(const char* filepath);
+	int nouveau_calque();
 	bool save_image(const char* filepath, int format);
 	void draw_pixel_at(int x, int y, bool use_couleur_pinceau = true, ImVec4 couleur = ImVec4(1.f, 1.f, 1.f, 0.00f));
 
