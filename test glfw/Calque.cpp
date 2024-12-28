@@ -49,6 +49,7 @@ Calque::Calque(const char* filepath)
     else
     {
         std::cout << "Failed to load image" << std::endl;
+        throw -1;
     }   
 }
 
@@ -148,6 +149,7 @@ void Calque::actualise_texture()
     glBindTexture(GL_TEXTURE_2D, texture);
     if (has_alpha) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        
     }
     else {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);

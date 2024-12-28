@@ -145,14 +145,11 @@ int Canva::load_image(const char* filepath)
 {
     {
         //load an image
-        calques.clear();
-        Calque* new_cal = new Calque(filepath);
-
         
-        
-       
-        if (new_cal)
-        {
+        Calque* new_cal;
+        try {
+            new_cal = new Calque(filepath);
+            calques.clear();
             calques.push_back(new_cal);
             height = calques[0]->height;
             width = calques[0]->width;
@@ -161,11 +158,13 @@ int Canva::load_image(const char* filepath)
             actualise_viewport();
             //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         }
-        else
-        {
+        catch (int err) {
             std::cout << "Failed to load image" << std::endl;
+            /*delete new_cal;*/
             return -1;
-        }    // gen texture
+        }
+       
+        
     }
 }
 
