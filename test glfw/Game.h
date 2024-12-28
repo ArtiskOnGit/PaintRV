@@ -10,6 +10,7 @@
 #include "imgui_impl_opengl3.h"
 #include "Canva.h"
 #include "ImguiWindows.h"
+#include "Curseur.h"
 
 #include "Shader.h"
 
@@ -32,6 +33,8 @@ private :
 public:
 	ImguiWindows* imguiWindows;
 	Canva canva;
+	Curseur curseur;
+
 	GLFWwindow* window = nullptr;
 	
 	static Game* instance;

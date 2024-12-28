@@ -148,6 +148,7 @@
     <ClCompile Include="..\..\..\..\..\..\..\..\Dev\glad\src\glad.c" />
     <ClCompile Include="Calque.cpp" />
     <ClCompile Include="Canva.cpp" />
+    <ClCompile Include="Curseur.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="ImguiWindows.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="CallBacks.h" />
     <ClInclude Include="Calque.h" />
     <ClInclude Include="Canva.h" />
+    <ClInclude Include="Curseur.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="ImguiWindows.h" />
     <ClInclude Include="imgui\imconfig.h" />
@@ -183,6 +185,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment.fs" />
+    <None Include="fragment_curseur.fs" />
+    <None Include="vertex _curseur.vs" />
     <None Include="vertex.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
