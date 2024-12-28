@@ -1,5 +1,25 @@
 #include "ImguiWindows.h"
 
+
+bool ColorPicker4U32(const char* label, ImU32* color, ImGuiColorEditFlags flags = 0) {
+    float col[4];
+    col[0] = (float)((*color >> 0) & 0xFF) / 255.0f;
+    col[1] = (float)((*color >> 8) & 0xFF) / 255.0f;
+    col[2] = (float)((*color >> 16) & 0xFF) / 255.0f;
+    col[3] = (float)((*color >> 24) & 0xFF) / 255.0f;
+
+    bool result = ImGui::ColorPicker4(label, col, flags);
+
+    *color = ((ImU32)(col[0] * 255.0f)) |
+        ((ImU32)(col[1] * 255.0f) << 8) |
+        ((ImU32)(col[2] * 255.0f) << 16)|
+        ((ImU32)(col[3] * 255.0f) << 24);
+
+    return result;
+}
+
+
+
 void ImguiWindows::init_ui()
 {
     ImGui::StyleColorsDark();
@@ -33,14 +53,33 @@ void ImguiWindows::init_ui()
     ImGui::RadioButton("Cercle", &canva->tool, 5);
     ImGui::SliderInt("Taille", &(canva->size), 1, 200);
     //ImGui::SliderFloat("Taille", &size, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-    ImGui::ColorEdit3("Couleur pinceau", (float*)&(canva->couleur_pinceau)); // Edit 3 floats representing a color
+    ColorPicker4U32("Couleur pinceau", &canva->u32_couleur_pinceau); // Edit 3 floats representing a color
 
     ImGui::Separator();
-    ImGui::Text("Calques :");
+    ImGui::Text("Calques :"); ImGui::SameLine();
+    if (ImGui::Button("Nouveau calque")) {
+        canva->nouveau_calque();
+    }
     ImGui::PushStyleColor(ImGuiCol_ChildBg, ImGui::GetStyleColorVec4(ImGuiCol_FrameBg));
     if (ImGui::BeginChild("ResizableChild", ImVec2(-FLT_MIN, ImGui::GetTextLineHeightWithSpacing() * 8), ImGuiChildFlags_Borders | ImGuiChildFlags_ResizeY))
-        for (int n = 0; n < 10; n++)
-            ImGui::Text("Calque %04d", n);
+        for (int n = 0; n < canva->nombre_calques; n++)
+        {
+            
+            //ImGui::Text("Calque %04d", n); ImGui::SameLine();
+            ImTextureID my_tex_id = canva->calques[n]->texture;
+            
+            float height_text = ImGui::GetTextLineHeightWithSpacing() * 2;
+            float width_text = height_text * canva->calques[n]->width/canva->calques[n]->height;
+            ImVec2 uv_min = ImVec2(0.0f, 0.0f);                 // Top-left
+            ImVec2 uv_max = ImVec2(1.0f, 1.0f);                 // Lower-right
+
+            ImGui::PushID(n);
+            ImGui::Image(my_tex_id, ImVec2(width_text, height_text), uv_min, uv_max); ImGui::SameLine();
+            ImGui::RadioButton("##radioButton", &canva->calque_selectionne, n); ImGui::SameLine();
+            ImGui::InputText("##nom", (canva->calques[n]->nom), 128); ImGui::SameLine();
+            ImGui::Checkbox("Hide", &canva->calques[n]->activated);
+            ImGui::PopID();
+        }
     ImGui::PopStyleColor();
     ImGui::EndChild();
 

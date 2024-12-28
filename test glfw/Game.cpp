@@ -3,7 +3,6 @@
 
 
 //unsigned char* data;
-unsigned int texture;
 
 unsigned int VBO, VAO, EBO;
 
@@ -86,7 +85,7 @@ void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int
             break;
         }
 
-        canva.actualise_texture();
+        //canva.actualise_texture();
         //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, canva.width, canva.height, 0, GL_RGB, GL_UNSIGNED_BYTE, canva.data);
         //glGenerateMipmap(GL_TEXTURE_2D);
     }
@@ -124,7 +123,7 @@ void Game::cursor_position_callback(GLFWwindow* window, double xpos, double ypos
             last_mouse_y = ypos;
             break;
         }
-        canva.actualise_texture();
+        //canva.actualise_texture();
         //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, canva.width, canva.height, 0, GL_RGB, GL_UNSIGNED_BYTE, canva.data);
         //glGenerateMipmap(GL_TEXTURE_2D);
     }
@@ -143,7 +142,8 @@ void Game::cursor_position_callback_wrapper(GLFWwindow* window, double xpos, dou
 }
 
 void  Game::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-    std::cout << xoffset << " " << yoffset << std::endl;
+    if (imguiWindows->io.WantCaptureMouse) { return; }
+    //std::cout << xoffset << " " << yoffset << std::endl;
     if (yoffset > 0) {
         canva.zoom *= 1.1f;
     }
@@ -237,21 +237,9 @@ void Game::prepare_vertex()
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
+    
 
-    glGenTextures(1, &texture);
-
-    glBindTexture(GL_TEXTURE_2D, texture);
-    //changer les parametres du texture2D
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set texture filtering parameters
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    //tell opengl what to do with the alphas channels
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+   
 }
 
 
@@ -261,14 +249,21 @@ int Game::render()
 {
 
 
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClearColor(1.f, 0.8f, 0.5f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
 
-    glBindTexture(GL_TEXTURE_2D, texture);
+    
 
     glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    for (int i = 0; i < canva.calques.size(); i++) {
+        if (canva.calques[i]->activated) {
+            glBindTexture(GL_TEXTURE_2D, canva.calques[i]->texture);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
+    }
+    
+    
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
