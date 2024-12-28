@@ -142,7 +142,8 @@ void Game::cursor_position_callback_wrapper(GLFWwindow* window, double xpos, dou
 }
 
 void  Game::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-    std::cout << xoffset << " " << yoffset << std::endl;
+    if (imguiWindows->io.WantCaptureMouse) { return; }
+    //std::cout << xoffset << " " << yoffset << std::endl;
     if (yoffset > 0) {
         canva.zoom *= 1.1f;
     }
