@@ -24,7 +24,6 @@ private :
 	bool drawing = false;
 	double last_mouse_x = 0;
 	double last_mouse_y = 0;
-
 	int window_height = 600;
 	int window_width = 800;
 

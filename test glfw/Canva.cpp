@@ -107,11 +107,7 @@ void Canva::pipette(int x, int y)
 int Canva::new_blank_canva(int width_canva, int height_canva, bool has_alpha_canva)
 {
     //create blank canva
-    calques.clear();
-    /*if (data) { delete[] data; }
-    data = nullptr;*/
-    
-    
+    calques.clear(); //supprimes les anciens calques, shared_ptr donc memoire gérée automatiquement
 
     int nr_channel;
     if (has_alpha_canva) {
@@ -119,9 +115,10 @@ int Canva::new_blank_canva(int width_canva, int height_canva, bool has_alpha_can
     }
     else { nr_channel = NR_CHANNEL_WITHOUT_ALPHA; }
     
-    Calque* new_cal = new Calque(width_canva, height_canva, nr_channel);
+    std::shared_ptr <Calque> new_cal = std::make_shared<Calque>(width_canva, height_canva, nr_channel);
 
     if (new_cal != nullptr) {
+        calque_selectionne = 0;
         calques.push_back(new_cal);
         height = height_canva;
         width = width_canva;
@@ -129,13 +126,14 @@ int Canva::new_blank_canva(int width_canva, int height_canva, bool has_alpha_can
         nombre_calques = 1;
         actualise_viewport();
         calques[0]->actualise_texture();
-        //nrChannels = nr_channel;
+        return 0;
     }
     else
     {
         std::cout << "Failed to create new canva" << std::endl;
         return -1;
-    }    // gen texture
+    }    
+
 
 
 
@@ -146,9 +144,10 @@ int Canva::load_image(const char* filepath)
     {
         //load an image
         
-        Calque* new_cal;
+        std::shared_ptr<Calque> new_cal;
         try {
-            new_cal = new Calque(filepath);
+            new_cal = std::make_shared<Calque>(filepath);
+            calque_selectionne = 0;
             calques.clear();
             calques.push_back(new_cal);
             height = calques[0]->height;
@@ -156,10 +155,10 @@ int Canva::load_image(const char* filepath)
             nombre_calques = 1;
 
             actualise_viewport();
-            //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            return 0;
         }
         catch (int err) {
-            std::cout << "Failed to load image" << std::endl;
+            std::cout << "Failed to load image :" << err << std::endl;
             /*delete new_cal;*/
             return -1;
         }
@@ -177,20 +176,21 @@ int Canva::nouveau_calque()
     }
     else { nr_channel = NR_CHANNEL_WITHOUT_ALPHA; }
 
-    Calque* new_cal = new Calque(width, height, nr_channel);
+    std::shared_ptr<Calque> new_cal = std::make_shared<Calque>(width, height, nr_channel);
 
     if (new_cal != nullptr) {
         calques.push_back(new_cal);
         nombre_calques += 1;
         actualise_viewport();
         calques[nombre_calques-1]->actualise_texture();
-        //nrChannels = nr_channel;
+        
+        return 0;
     }
     else
     {
         std::cout << "Failed to create new calque" << std::endl;
         return -1;
-    }    // gen texture
+    }   
 
     return 0;
 }

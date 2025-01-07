@@ -14,6 +14,7 @@
 #include "Calque.h"
 
 
+
 class Canva
 {
 private:
@@ -37,7 +38,9 @@ public:
 
 	Canva() {}
 	bool has_alpha = false;
-	std::vector<Calque*> calques; // tableau de calques
+
+	//shared_ptr comme ça quand on calques.clear(), les "Calque" sont automatiquement supprimés
+	std::vector<std::shared_ptr<Calque>> calques; // tableau de calques 
 	//unsigned char* data = nullptr; //sera un pointeur vers le calque courant
 	int calque_selectionne = 0;
 	int nombre_calques = 0;
@@ -58,7 +61,7 @@ public:
 	int load_image(const char* filepath);
 	int nouveau_calque();
 	bool save_image(const char* filepath, int format);
-	void draw_pixel_at(int x, int y, bool use_couleur_pinceau = true, ImVec4 couleur = ImVec4(1.f, 1.f, 1.f, 0.00f));
+	//void draw_pixel_at(int x, int y, bool use_couleur_pinceau = true, ImVec4 couleur = ImVec4(1.f, 1.f, 1.f, 0.00f));
 
 };
 
