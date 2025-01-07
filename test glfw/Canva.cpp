@@ -50,58 +50,58 @@ void Canva::actualise_viewport()
 
 
 
-void Canva::dessiner_brosse_carree(int xpos_mouse, int ypos_mouse)
+void Canva::draw_square_brush(int xpos_mouse, int ypos_mouse)
 {
-    if (!gomme) {
+    if (!eraser) {
 
-        calques[calque_selectionne]->dessiner_brosse_carree(xpos_mouse, ypos_mouse, size, u32_couleur_pinceau);
+        calques[selected_layer]->dessiner_brosse_carree(xpos_mouse, ypos_mouse, size, u32_color_brush);
     }
-    else { calques[calque_selectionne]->dessiner_brosse_carree(xpos_mouse, ypos_mouse, size, u32_couleur_eraser); }
+    else { calques[selected_layer]->dessiner_brosse_carree(xpos_mouse, ypos_mouse, size, u32_color_eraser); }
     
     
     
-    calques[calque_selectionne]->actualise_texture();
+    calques[selected_layer]->actualise_texture();
 }
 
 
-void Canva::dessiner_brosse_circulaire(int xpos_mouse, int ypos_mouse)
+void Canva::draw_circle_brush(int xpos_mouse, int ypos_mouse)
 {
     ImVec4 couleur;
-    if (!gomme) {
-        calques[calque_selectionne]->dessiner_brosse_circulaire(xpos_mouse, ypos_mouse, size, u32_couleur_pinceau);
+    if (!eraser) {
+        calques[selected_layer]->dessiner_brosse_circulaire(xpos_mouse, ypos_mouse, size, u32_color_brush);
     }
-    else { calques[calque_selectionne]->dessiner_brosse_circulaire(xpos_mouse, ypos_mouse, size, u32_couleur_eraser); }
+    else { calques[selected_layer]->dessiner_brosse_circulaire(xpos_mouse, ypos_mouse, size, u32_color_eraser); }
 
     
-    calques[calque_selectionne]->actualise_texture();
+    calques[selected_layer]->actualise_texture();
     
 }
 
 
 void Canva::fill(int x, int y) {
-    calques[calque_selectionne]->fill(x, y, u32_couleur_pinceau);
-    calques[calque_selectionne]->actualise_texture();
+    calques[selected_layer]->fill(x, y, u32_color_brush);
+    calques[selected_layer]->actualise_texture();
 }
 
 
 void Canva::draw_circle(int center_x, int center_y, int radius, bool erase) {
     ImU32 couleur;
-    if (gomme) {
-        couleur = u32_couleur_pinceau;
+    if (eraser) {
+        couleur = u32_color_brush;
     }
-    else { couleur = u32_couleur_eraser; }
+    else { couleur = u32_color_eraser; }
 
-    calques[calque_selectionne]->draw_circle(center_x, center_y, radius, couleur);
-    calques[calque_selectionne]->actualise_texture();
+    calques[selected_layer]->draw_circle(center_x, center_y, radius, couleur);
+    calques[selected_layer]->actualise_texture();
 }
 
 void Canva::pipette(int x, int y)
 {
-    u32_couleur_pinceau = (calques[calque_selectionne]->getR(x, y) >> IM_COL32_R_SHIFT & 0xff);
-    u32_couleur_pinceau |= (calques[calque_selectionne]->getG(x, y) << IM_COL32_G_SHIFT);
-    u32_couleur_pinceau |= (calques[calque_selectionne]->getB(x, y) << IM_COL32_B_SHIFT);
-    if (calques[calque_selectionne]->has_alpha) { u32_couleur_pinceau |= (calques[calque_selectionne]->getA(x, y) << IM_COL32_A_SHIFT); }
-    else { u32_couleur_pinceau |= (255 << IM_COL32_A_SHIFT); }
+    u32_color_brush = (calques[selected_layer]->getR(x, y) >> IM_COL32_R_SHIFT & 0xff);
+    u32_color_brush |= (calques[selected_layer]->getG(x, y) << IM_COL32_G_SHIFT);
+    u32_color_brush |= (calques[selected_layer]->getB(x, y) << IM_COL32_B_SHIFT);
+    if (calques[selected_layer]->has_alpha) { u32_color_brush |= (calques[selected_layer]->getA(x, y) << IM_COL32_A_SHIFT); }
+    else { u32_color_brush |= (255 << IM_COL32_A_SHIFT); }
 }
 
 int Canva::new_blank_canva(int width_canva, int height_canva, bool has_alpha_canva)
@@ -115,15 +115,15 @@ int Canva::new_blank_canva(int width_canva, int height_canva, bool has_alpha_can
     }
     else { nr_channel = NR_CHANNEL_WITHOUT_ALPHA; }
     
-    std::shared_ptr <Calque> new_cal = std::make_shared<Calque>(width_canva, height_canva, nr_channel);
+    std::shared_ptr <Layer> new_cal = std::make_shared<Layer>(width_canva, height_canva, nr_channel);
 
     if (new_cal != nullptr) {
-        calque_selectionne = 0;
+        selected_layer = 0;
         calques.push_back(new_cal);
         height = height_canva;
         width = width_canva;
         has_alpha = has_alpha_canva;
-        nombre_calques = 1;
+        nr_layer = 1;
         actualise_viewport();
         calques[0]->actualise_texture();
         return 0;
@@ -144,15 +144,16 @@ int Canva::load_image(const char* filepath)
     {
         //load an image
         
-        std::shared_ptr<Calque> new_cal;
+        
         try {
-            new_cal = std::make_shared<Calque>(filepath);
-            calque_selectionne = 0;
+            std::shared_ptr<Layer> new_cal;
+            new_cal = std::make_shared<Layer>(filepath);
+            selected_layer = 0;
             calques.clear();
-            calques.push_back(new_cal);
+            calques.push_back(new_cal); //pushback dans ce cas est une mauvaise pratique je crois, voir https://youtu.be/Xx-NcqmveDc?si=pCQifBdRHjg4BG1E&t=1275
             height = calques[0]->height;
             width = calques[0]->width;
-            nombre_calques = 1;
+            nr_layer = 1;
 
             actualise_viewport();
             return 0;
@@ -167,7 +168,7 @@ int Canva::load_image(const char* filepath)
     }
 }
 
-int Canva::nouveau_calque()
+int Canva::new_layer()
 {
 
     int nr_channel;
@@ -176,19 +177,20 @@ int Canva::nouveau_calque()
     }
     else { nr_channel = NR_CHANNEL_WITHOUT_ALPHA; }
 
-    std::shared_ptr<Calque> new_cal = std::make_shared<Calque>(width, height, nr_channel);
+    
 
-    if (new_cal != nullptr) {
-        calques.push_back(new_cal);
-        nombre_calques += 1;
+    try {
+        std::shared_ptr<Layer> new_cal = std::make_shared<Layer>(width, height, nr_channel);
+        calques.push_back(new_cal); //pushback dans ce cas est une mauvaise pratique je crois, voir https://youtu.be/Xx-NcqmveDc?si=pCQifBdRHjg4BG1E&t=1275
+        nr_layer += 1;
         actualise_viewport();
-        calques[nombre_calques-1]->actualise_texture();
+        calques[nr_layer-1]->actualise_texture();
         
         return 0;
     }
-    else
+    catch (int err)
     {
-        std::cout << "Failed to create new calque" << std::endl;
+        std::cout << "Failed to create new calque" << err << std::endl;
         return -1;
     }   
 
@@ -198,10 +200,10 @@ int Canva::nouveau_calque()
 bool Canva::save_image(const char* filepath, int format)
 {
     if (format == 0) { //png
-    stbi_write_png(filepath, width, height, calques[calque_selectionne]->nrChannels, calques[calque_selectionne]->data, width * calques[calque_selectionne]->nrChannels);
+    stbi_write_png(filepath, width, height, calques[selected_layer]->nrChannels, calques[selected_layer]->data, width * calques[selected_layer]->nrChannels);
 }
     else if (format == 1) {
-        stbi_write_jpg(filepath, width, height, calques[calque_selectionne]->nrChannels, calques[calque_selectionne]->data, 100);
+        stbi_write_jpg(filepath, width, height, calques[selected_layer]->nrChannels, calques[selected_layer]->data, 100);
     }
     return true;
 }

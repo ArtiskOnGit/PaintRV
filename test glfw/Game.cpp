@@ -68,10 +68,10 @@ void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int
         case -1:
             return;
         case 0:
-            canva.dessiner_brosse_carree(xpos, ypos);
+            canva.draw_square_brush(xpos, ypos);
             break;
         case 1:
-            canva.dessiner_brosse_circulaire(xpos, ypos);
+            canva.draw_circle_brush(xpos, ypos);
             break;
 
         case 3:
@@ -110,14 +110,14 @@ void Game::cursor_position_callback(GLFWwindow* window, double xpos, double ypos
             return;
         case 0: // interpolation linéaire entre la dernier position de la souris et la position actuelle mix; (x, y, a) retourne : x*(1-a) + y*a
             for (int a = 0; a < step_number; a++) {
-                canva.dessiner_brosse_carree(glm::mix(xpos, last_mouse_x, a / step_number), glm::mix(ypos, last_mouse_y, a / step_number));
+                canva.draw_square_brush(glm::mix(xpos, last_mouse_x, a / step_number), glm::mix(ypos, last_mouse_y, a / step_number));
             }
             last_mouse_x = xpos;
             last_mouse_y = ypos;
             break;
         case 1: // interpolation linéaire entre la dernier position de la souris et la position actuelle mix; (x, y, a) retourne : x*(1-a) + y*a
             for (int a = 0; a < step_number; a++) {
-                canva.dessiner_brosse_circulaire(glm::mix(xpos, last_mouse_x, a / step_number), glm::mix(ypos, last_mouse_y, a / step_number));
+                canva.draw_circle_brush(glm::mix(xpos, last_mouse_x, a / step_number), glm::mix(ypos, last_mouse_y, a / step_number));
             }
             last_mouse_x = xpos;
             last_mouse_y = ypos;

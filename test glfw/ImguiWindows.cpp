@@ -46,23 +46,23 @@ void ImguiWindows::init_ui()
     ImGui::RadioButton("Pas d'outil", &canva->tool, -1);
     ImGui::RadioButton("Brosse carrée", &canva->tool, 0); ImGui::SameLine();
     ImGui::RadioButton("Brosse circulaire", &canva->tool, 1); ImGui::SameLine();
-    ImGui::Checkbox("Gomme", &canva->gomme);
+    ImGui::Checkbox("Gomme", &canva->eraser);
     //ImGui::RadioButton("Gomme", &canva->tool, 2); 
     ImGui::RadioButton("Remplir", &canva->tool, 3);
     ImGui::RadioButton("Pipette", &canva->tool, 4);
     ImGui::RadioButton("Cercle", &canva->tool, 5);
     ImGui::SliderInt("Taille", &(canva->size), 1, 200);
     //ImGui::SliderFloat("Taille", &size, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-    ColorPicker4U32("Couleur pinceau", &canva->u32_couleur_pinceau); // Edit 3 floats representing a color
+    ColorPicker4U32("Couleur pinceau", &canva->u32_color_brush); // Edit 3 floats representing a color
 
     ImGui::Separator();
     ImGui::Text("Calques :"); ImGui::SameLine();
     if (ImGui::Button("Nouveau calque")) {
-        canva->nouveau_calque();
+        canva->new_layer();
     }
     ImGui::PushStyleColor(ImGuiCol_ChildBg, ImGui::GetStyleColorVec4(ImGuiCol_FrameBg));
     if (ImGui::BeginChild("ResizableChild", ImVec2(-FLT_MIN, ImGui::GetTextLineHeightWithSpacing() * 8), ImGuiChildFlags_Borders | ImGuiChildFlags_ResizeY))
-        for (int n = 0; n < canva->nombre_calques; n++)
+        for (int n = 0; n < canva->nr_layer; n++)
         {
             
             //ImGui::Text("Calque %04d", n); ImGui::SameLine();
@@ -75,7 +75,7 @@ void ImguiWindows::init_ui()
 
             ImGui::PushID(n);
             ImGui::Image(my_tex_id, ImVec2(width_text, height_text), uv_min, uv_max); ImGui::SameLine();
-            ImGui::RadioButton("##radioButton", &canva->calque_selectionne, n); ImGui::SameLine();
+            ImGui::RadioButton("##radioButton", &canva->selected_layer, n); ImGui::SameLine();
             ImGui::InputText("##nom", (canva->calques[n]->nom), 128); ImGui::SameLine();
             ImGui::Checkbox("Hide", &canva->calques[n]->activated);
             ImGui::PopID();

@@ -1,4 +1,4 @@
-﻿#include "Calque.h"
+﻿#include "Layer.h"
 
 #ifndef STB_HEADER
 #define STB_HEADER
@@ -11,7 +11,7 @@
 const int NR_CHANNEL_WITH_ALPHA = 4;
 const int NR_CHANNEL_WITHOUT_ALPHA = 3;
 
-Calque::Calque(int new_width, int new_height, int new_channels)
+Layer::Layer(int new_width, int new_height, int new_channels)
 {   
     init_texture();
 	data = new unsigned char[new_width * new_height * new_channels];
@@ -28,7 +28,7 @@ Calque::Calque(int new_width, int new_height, int new_channels)
 
 }
 
-Calque::Calque(const char* filepath)
+Layer::Layer(const char* filepath)
 {
     init_texture();
     if (data) { delete[] data; }
@@ -53,7 +53,7 @@ Calque::Calque(const char* filepath)
     }   
 }
 
-void Calque::init_texture()
+void Layer::init_texture()
 {
     glGenTextures(1, &texture);
 
@@ -71,7 +71,7 @@ void Calque::init_texture()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void Calque::fill(int x, int y, ImU32 couleur)
+void Layer::fill(int x, int y, ImU32 couleur)
 {
     unsigned char ColorToFill[4] = { getR(x, y), getG(x, y), getB(x, y) , 255};
     std::queue<std::pair<int, int>> q;
@@ -122,7 +122,7 @@ void Calque::fill(int x, int y, ImU32 couleur)
 
 
 }
-int Calque::coord_to_indextexture(int x, int y) {
+int Layer::coord_to_indextexture(int x, int y) {
     if (x >= width) { x = width - 1; }
     if (y >= height) { y = height - 1; }
     if (x < 0) { x = 0; }
@@ -133,7 +133,7 @@ int Calque::coord_to_indextexture(int x, int y) {
     return  x + y * width;
 }
 
-void Calque::draw_pixel_at(int x, int y,const ImU32& couleur)
+void Layer::draw_pixel_at(int x, int y,const ImU32& couleur)
 {
     int index = coord_to_indextexture(x, y);
     data[index * nrChannels] = (couleur >> IM_COL32_R_SHIFT & 0xff); //R
@@ -144,7 +144,7 @@ void Calque::draw_pixel_at(int x, int y,const ImU32& couleur)
     }
 }
 
-void Calque::actualise_texture()
+void Layer::actualise_texture()
 {
     glBindTexture(GL_TEXTURE_2D, texture);
     if (has_alpha) {
@@ -156,7 +156,7 @@ void Calque::actualise_texture()
     }
 }
 
-void Calque::dessiner_brosse_carree(int xpos_mouse, int ypos_mouse, const int& size, const ImU32& couleur)
+void Layer::dessiner_brosse_carree(int xpos_mouse, int ypos_mouse, const int& size, const ImU32& couleur)
 {
    
     //std::cout << "couleur : " << (couleur >> IM_COL32_R_SHIFT & 0xff) << " " << (couleur >> IM_COL32_G_SHIFT & 0xff) << " " << (couleur >> IM_COL32_B_SHIFT & 0xff) << std::endl;
@@ -168,7 +168,7 @@ void Calque::dessiner_brosse_carree(int xpos_mouse, int ypos_mouse, const int& s
     }
 }
 
-void Calque::dessiner_brosse_circulaire(int xpos_mouse, int ypos_mouse, const int& size, const ImU32& couleur)
+void Layer::dessiner_brosse_circulaire(int xpos_mouse, int ypos_mouse, const int& size, const ImU32& couleur)
 {
     for (int i = -size; i < size; i++) {
         for (int j = -size; j < size; j++) {
@@ -179,7 +179,7 @@ void Calque::dessiner_brosse_circulaire(int xpos_mouse, int ypos_mouse, const in
     }
 }
 
-void Calque::draw_circle(int center_x, int center_y, int radius, const ImU32& couleur)
+void Layer::draw_circle(int center_x, int center_y, int radius, const ImU32& couleur)
 {
     // Parcours de la zone autour du centre 
     for (int y = -radius; y <= radius; y++) {
@@ -199,19 +199,19 @@ void Calque::draw_circle(int center_x, int center_y, int radius, const ImU32& co
 }
 
 
-unsigned char Calque::getR(int x, int y)
+unsigned char Layer::getR(int x, int y)
 {
     return data[coord_to_indextexture(x, y)*nrChannels];
 }
-unsigned char Calque::getG(int x, int y)
+unsigned char Layer::getG(int x, int y)
 {
     return data[coord_to_indextexture(x, y) * nrChannels + 1];
 }
-unsigned char Calque::getB(int x, int y)
+unsigned char Layer::getB(int x, int y)
 {
     return data[coord_to_indextexture(x, y) * nrChannels + 2];
 }
-unsigned char Calque::getA(int x, int y)
+unsigned char Layer::getA(int x, int y)
 {
     return data[coord_to_indextexture(x, y) * nrChannels + 3];
 }

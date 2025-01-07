@@ -13,17 +13,17 @@
 
 
 
-class Calque
+class Layer
 {
 private:
 	
 public:
 	unsigned int texture;
 	char nom[128] = "Calque";
-	Calque(int new_width, int new_height, int new_channels);
-	Calque(const char* filepath);
+	Layer(int new_width, int new_height, int new_channels);
+	Layer(const char* filepath);
 	void init_texture();
-	~Calque() { delete[]data;}
+	~Layer() { delete[]data;}
 	bool has_alpha = false;
 	bool activated = true;
 	int width = 550;

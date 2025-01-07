@@ -57,7 +57,7 @@
     <ClCompile Include="..\..\..\..\..\..\..\..\Dev\glad\src\glad.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Calque.cpp">
+    <ClCompile Include="Layer.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -107,7 +107,7 @@
     <ClInclude Include="ImguiWindows.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Calque.h">
+    <ClInclude Include="Layer.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="stb_image_write.h">
