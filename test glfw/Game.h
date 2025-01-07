@@ -29,6 +29,8 @@ private :
 
 	
 public:
+	Game();
+	void cleanup();
 	ImguiWindows* imguiWindows;
 	Canva canva;
 	GLFWwindow* window = nullptr;
@@ -39,7 +41,8 @@ public:
 	
 	
 	int render();
-	Game();
+	void run();
+	
 
 	void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 	static void mouse_button_callback_wrapper(GLFWwindow* window, int button, int action, int mods);

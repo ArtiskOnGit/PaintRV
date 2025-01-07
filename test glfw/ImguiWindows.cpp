@@ -118,7 +118,7 @@ void ImguiWindows::NewFileWindow()
 	bool window_contents_visible = ImGui::Begin("New file", &showNewFileWindow);
     if (!window_contents_visible)
     {
-        printf("Ici\n");
+        //printf("Ici\n");
         ImGui::End();
         return;
     }
@@ -143,7 +143,7 @@ void ImguiWindows::SaveAsWindow()
     bool window_contents_visible = ImGui::Begin("Example: Documents", &showSaveAsWindow);
     if (!window_contents_visible)
     {
-        printf("Ici\n");
+        //printf("Ici\n");
         ImGui::End();
         return;
     }
@@ -173,7 +173,7 @@ void ImguiWindows::OpenFileWindow()
     bool window_contents_visible = ImGui::Begin("Example: Documents", &showOpenFileWindow);
     if (!window_contents_visible)
     {
-        printf("Ici\n");
+        //printf("Ici\n");
         ImGui::End();
         return;
     }

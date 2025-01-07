@@ -26,6 +26,20 @@ Game::Game() {
     instance = this;
     imguiWindows = new ImguiWindows(&canva);
 
+
+    //ouvrir la texture, les vertex
+    //game.load_image("container.bmp"); //methode archaïque horrible
+    init_opengl_glfw();
+    prepare_vertex();
+
+}
+
+void Game::cleanup()
+{
+    glfwTerminate();
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 }
  
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) // gerer mieux
@@ -59,7 +73,7 @@ void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int
         xpos /= canva.zoom;
         ypos /= canva.zoom;
         //ypos = canva.height - ypos;
-        std::cout << xpos << " " << ypos << " " << ypos - ((window_height - canva.height) / canva.zoom) << std::endl;
+        //std::cout << xpos << " " << ypos << " " << ypos - ((window_height - canva.height) / canva.zoom) << std::endl;
         last_mouse_x = xpos;
         last_mouse_y = ypos;
 
@@ -151,7 +165,7 @@ void  Game::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) 
         canva.zoom *= 0.9f;
     }
     canva.actualise_viewport();
-    printf("dezooming");
+    //printf("dezooming");
     
 }
 
@@ -272,6 +286,26 @@ int Game::render()
     glfwPollEvents();
 
     return 0;
+}
+
+void Game::run()
+{
+    canva.new_blank_canva(550, 550, true);
+
+    Shader shader("C:\\Users\\Alexandre\\Documents\\cours\\tries\\P1RV\\PaintRV\\test glfw\\vertex.vs", "C:\\Users\\Alexandre\\Documents\\cours\\tries\\P1RV\\PaintRV\\test glfw\\fragment.fs");
+
+    while (!glfwWindowShouldClose(window))
+    {
+        imguiWindows->init_ui();
+
+        shader.use();
+        //shader.setFloat("zoom", game.canva.zoom);
+
+        //glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        render();
+
+    }
 }
 
 

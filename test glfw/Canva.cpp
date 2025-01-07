@@ -133,10 +133,6 @@ int Canva::new_blank_canva(int width_canva, int height_canva, bool has_alpha_can
         std::cout << "Failed to create new canva" << std::endl;
         return -1;
     }    
-
-
-
-
 }
 
 int Canva::load_image(const char* filepath)
