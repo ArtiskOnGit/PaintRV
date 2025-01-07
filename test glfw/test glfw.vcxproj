@@ -148,7 +148,7 @@
     <ClCompile Include="..\..\..\..\..\..\..\..\Dev\glad\src\glad.c" />
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="Canva.cpp" />
-    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="App.cpp" />
     <ClCompile Include="ImguiWindows.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -163,7 +163,7 @@
     <ClInclude Include="CallBacks.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Canva.h" />
-    <ClInclude Include="Game.h" />
+    <ClInclude Include="App.h" />
     <ClInclude Include="ImguiWindows.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />

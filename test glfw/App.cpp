@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "App.h"
 
 
 
@@ -7,7 +7,7 @@
 unsigned int VBO, VAO, EBO;
 
 
-Game* Game::instance = nullptr;
+App* App::instance = nullptr;
 float z = 0.0f;
 float vertices[] = {
     // positions         // texture coords
@@ -21,7 +21,7 @@ unsigned int indices[] = {
     1, 2, 3  // second triangle
 };
 
-Game::Game() {
+App::App() {
     
     instance = this;
     imguiWindows = new ImguiWindows(&canva);
@@ -34,7 +34,7 @@ Game::Game() {
 
 }
 
-void Game::cleanup()
+void App::cleanup()
 {
     glfwTerminate();
     ImGui_ImplOpenGL3_Shutdown();
@@ -60,7 +60,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 
 
-void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+void App::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
     
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !imguiWindows->io.WantCaptureMouse) {
         drawing = true;
@@ -109,7 +109,7 @@ void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int
 }
 
 
-void Game::cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
+void App::cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
     if (drawing && !imguiWindows->io.WantCaptureMouse) {
         //std::cout << xpos << " " << ypos << std::endl;
         ypos = ypos - (window_height - (canva.height)*canva.zoom);
@@ -143,19 +143,19 @@ void Game::cursor_position_callback(GLFWwindow* window, double xpos, double ypos
     }
 }
 
-void Game::mouse_button_callback_wrapper(GLFWwindow* window, int button, int action, int mods) {
+void App::mouse_button_callback_wrapper(GLFWwindow* window, int button, int action, int mods) {
     if (instance) {
         instance->mouse_button_callback(window, button, action, mods);
     }
 }
 
-void Game::cursor_position_callback_wrapper(GLFWwindow* window, double xpos, double ypos) {
+void App::cursor_position_callback_wrapper(GLFWwindow* window, double xpos, double ypos) {
     if (instance) {
         instance->cursor_position_callback(window, xpos, ypos);
     }
 }
 
-void  Game::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+void  App::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
     if (imguiWindows->io.WantCaptureMouse) { return; }
     //std::cout << xoffset << " " << yoffset << std::endl;
     if (yoffset > 0) {
@@ -169,13 +169,13 @@ void  Game::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) 
     
 }
 
-void Game::scroll_callback_wrapper(GLFWwindow* window, double xoffset, double yoffset) {
+void App::scroll_callback_wrapper(GLFWwindow* window, double xoffset, double yoffset) {
     if (instance) {
         instance->scroll_callback(window, xoffset, yoffset);
     }
 }
 
-int Game::init_opengl_glfw()
+int App::init_opengl_glfw()
 {
     //DEBUT initialisation de glfw
     glfwInit();
@@ -228,7 +228,7 @@ int Game::init_opengl_glfw()
     
 }
 
-void Game::prepare_vertex()
+void App::prepare_vertex()
 {
 
 
@@ -259,7 +259,7 @@ void Game::prepare_vertex()
 
 
 
-int Game::render()
+int App::render()
 {
 
 
@@ -288,7 +288,7 @@ int Game::render()
     return 0;
 }
 
-void Game::run()
+void App::run()
 {
     canva.new_blank_canva(550, 550, true);
 

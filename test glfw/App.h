@@ -18,7 +18,7 @@
 #include <iostream>
 
 
-class Game
+class App
 {
 private :
 	bool drawing = false;
@@ -29,13 +29,13 @@ private :
 
 	
 public:
-	Game();
+	App();
 	void cleanup();
 	ImguiWindows* imguiWindows;
 	Canva canva;
 	GLFWwindow* window = nullptr;
 	
-	static Game* instance;
+	static App* instance;
 	int init_opengl_glfw();
 	void prepare_vertex();
 	
