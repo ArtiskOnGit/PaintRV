@@ -29,7 +29,7 @@ void ImguiWindows::show_ui()
     io = ImGui::GetIO();
 
     ImGui::NewFrame();
-    ImGui::ShowDemoWindow(); // Show demo window! :)
+    //ImGui::ShowDemoWindow(); // Show demo window! :)
 
     //fenetres auxillaires
     if (showNewFileWindow) { NewFileWindow(); }

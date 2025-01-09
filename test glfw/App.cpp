@@ -204,7 +204,7 @@ int App::init_opengl_glfw()
     //glViewport(0, 0, 800, 600);
     //setting the glfw callbacks
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetKeyCallback(window, key_callback);
+    //glfwSetKeyCallback(window, key_callback);
     //glfwSetCursorPosCallback(window, cursor_position_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback_wrapper);
     glfwSetCursorPosCallback(window, cursor_position_callback_wrapper);
