@@ -1,9 +1,4 @@
 #pragma once
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/common.hpp> 
-
 #include "Canva.h"
 
 #include "imgui.h"
@@ -21,7 +16,7 @@ public:
 	ImGuiIO io;
 
 	ImguiWindows(Canva* c) : canva(c) {}
-	void init_ui();
+	void show_ui();
 
 	bool showNewFileWindow = false;
 	bool showSaveAsWindow = false;

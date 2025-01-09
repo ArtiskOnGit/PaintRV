@@ -20,9 +20,11 @@ class Canva
 private:
 	//void recursive_fill(int x, int y);
 	//void heap_fill(int x, int y);
-	unsigned char ColorToFill[3] = { 255, 255, 255 };
+	//unsigned char ColorToFill[3] = { 255, 255, 255 };
 
 public:
+	Canva() {}
+
 	bool eraser = false;
 	int tool = 0;
 	int width = 550;
@@ -36,7 +38,7 @@ public:
 
 	float zoom = 1.0f;
 
-	Canva() {}
+	
 	bool has_alpha = false;
 
 	//shared_ptr comme ça quand on calques.clear(), les "Layer" sont automatiquement supprimés

@@ -9,7 +9,6 @@ int main()
     
     app.run();
 
-    app.cleanup();
     
 
     return 0;

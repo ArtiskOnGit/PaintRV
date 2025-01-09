@@ -27,22 +27,15 @@ private :
 	int window_height = 600;
 	int window_width = 800;
 
-	
-public:
-	App();
-	void cleanup();
-	ImguiWindows* imguiWindows;
-	Canva canva;
-	GLFWwindow* window = nullptr;
-	
 	static App* instance;
-	int init_opengl_glfw();
+
 	void prepare_vertex();
-	
-	
+
 	int render();
-	void run();
-	
+
+	int init_opengl_glfw();
+
+	void cleanup();
 
 	void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 	static void mouse_button_callback_wrapper(GLFWwindow* window, int button, int action, int mods);
@@ -50,6 +43,20 @@ public:
 	static void cursor_position_callback_wrapper(GLFWwindow* window, double xpos, double ypos);
 	void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 	static void scroll_callback_wrapper(GLFWwindow* window, double xoffset, double yoffset);
+	
+
+	ImguiWindows* imguiWindows;
+	Canva canva;
+	GLFWwindow* window = nullptr;
+
+public:
+	App();
+
+	
+	void run();
+	
+
+	
 
 };
 

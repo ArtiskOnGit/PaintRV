@@ -16,29 +16,32 @@
 class Layer
 {
 private:
-	
+	void init_texture();
+	int coord_to_indextexture(int x, int y);
+	void draw_pixel_at(int x, int y, const ImU32& couleur);
+
 public:
 	unsigned int texture;
 	char nom[128] = "Calque";
+
 	Layer(int new_width, int new_height, int new_channels);
 	Layer(const char* filepath);
-	void init_texture();
 	~Layer() { delete[]data;}
+
 	bool has_alpha = false;
 	bool activated = true;
 	int width = 550;
 	int height = 550;
 	int nrChannels = 3;
+
 	unsigned char* data = nullptr;
+
 	void actualise_texture();
 	void dessiner_brosse_carree(int xpos_mouse, int ypos_mouse, const int& size, const ImU32& couleur);
 	void dessiner_brosse_circulaire(int xpos_mouse, int ypos_mouse, const int& size, const ImU32& couleur);
 	void draw_circle(int center_x, int center_y, int radius, const ImU32& couleur);
 	void fill(int x, int y, ImU32 couleur);
-	//void pipette(int x, int y);
-	int coord_to_indextexture(int x, int y);
-
-	void draw_pixel_at(int x, int y,const ImU32 &couleur );
+	//void pipette(int x, int y);	
 
 	unsigned char getR(int x, int y);
 	unsigned char getG(int x, int y);

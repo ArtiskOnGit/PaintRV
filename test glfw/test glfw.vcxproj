@@ -160,7 +160,6 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CallBacks.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Canva.h" />
     <ClInclude Include="App.h" />

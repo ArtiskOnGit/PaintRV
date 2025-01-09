@@ -22,15 +22,15 @@ unsigned int indices[] = {
 };
 
 App::App() {
-    
     instance = this;
     imguiWindows = new ImguiWindows(&canva);
+    init_opengl_glfw();
+    prepare_vertex();
 
 
     //ouvrir la texture, les vertex
     //game.load_image("container.bmp"); //methode archaïque horrible
-    init_opengl_glfw();
-    prepare_vertex();
+
 
 }
 
@@ -244,7 +244,6 @@ void App::prepare_vertex()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_DYNAMIC_DRAW);
 
-
     //tell opengl how to use the vertex data
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -296,16 +295,13 @@ void App::run()
 
     while (!glfwWindowShouldClose(window))
     {
-        imguiWindows->init_ui();
-
+        imguiWindows->show_ui();
         shader.use();
-        //shader.setFloat("zoom", game.canva.zoom);
-
-        //glDrawArrays(GL_TRIANGLES, 0, 3);
-
         render();
 
     }
+
+    cleanup();
 }
 
 

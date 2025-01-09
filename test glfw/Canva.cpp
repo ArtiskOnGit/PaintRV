@@ -86,7 +86,7 @@ void Canva::fill(int x, int y) {
 
 void Canva::draw_circle(int center_x, int center_y, int radius, bool erase) {
     ImU32 couleur;
-    if (eraser) {
+    if (!eraser) {
         couleur = u32_color_brush;
     }
     else { couleur = u32_color_eraser; }

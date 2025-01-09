@@ -20,7 +20,7 @@ bool ColorPicker4U32(const char* label, ImU32* color, ImGuiColorEditFlags flags 
 
 
 
-void ImguiWindows::init_ui()
+void ImguiWindows::show_ui()
 {
     ImGui::StyleColorsDark();
     ImGui_ImplOpenGL3_NewFrame();
