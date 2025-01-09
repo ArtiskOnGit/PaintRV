@@ -77,7 +77,7 @@ void ImguiWindows::show_ui()
             ImGui::Image(my_tex_id, ImVec2(width_text, height_text), uv_min, uv_max); ImGui::SameLine();
             ImGui::RadioButton("##radioButton", &canva->selected_layer, n); ImGui::SameLine();
             ImGui::InputText("##nom", (canva->calques[n]->nom), 128); ImGui::SameLine();
-            ImGui::Checkbox("Hide", &canva->calques[n]->activated);
+            ImGui::Checkbox("Montrer", &canva->calques[n]->activated);
             ImGui::PopID();
         }
     ImGui::PopStyleColor();

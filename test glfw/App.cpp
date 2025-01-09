@@ -183,7 +183,10 @@ int App::init_opengl_glfw()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    window = glfwCreateWindow(800, 600, "Paint RV pour de vrai", NULL, NULL);
+
+    window = glfwCreateWindow(1200, 1200, "Paint RV", NULL, NULL);
+    //glfwSetWindowPos(window, 0, 0);
+    glfwMaximizeWindow(window);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -291,7 +294,7 @@ void App::run()
 {
     canva.new_blank_canva(550, 550, true);
 
-    Shader shader("C:\\Users\\Alexandre\\Documents\\cours\\tries\\P1RV\\PaintRV\\test glfw\\vertex.vs", "C:\\Users\\Alexandre\\Documents\\cours\\tries\\P1RV\\PaintRV\\test glfw\\fragment.fs");
+    Shader shader(".\\vertex.vs", ".\\fragment.fs");
 
     while (!glfwWindowShouldClose(window))
     {
