@@ -12,9 +12,6 @@ const int NR_CHANNEL_WITH_ALPHA = 4;
 const int NR_CHANNEL_WITHOUT_ALPHA = 3;
 
 
-
-
-
 //marche pas pour des grandes surfaces
 //void Canva::recursive_fill(int x, int y)
 //{
@@ -37,10 +34,6 @@ const int NR_CHANNEL_WITHOUT_ALPHA = 3;
 //        }
 //    }
 //}
-
-
-
-
 
 
 void Canva::actualise_viewport()
@@ -138,9 +131,7 @@ int Canva::new_blank_canva(int width_canva, int height_canva, bool has_alpha_can
 int Canva::load_image(const char* filepath)
 {
     {
-        //load an image
-        
-        
+        //load an image        
         try {
             std::shared_ptr<Layer> new_cal;
             new_cal = std::make_shared<Layer>(filepath);
@@ -203,20 +194,3 @@ bool Canva::save_image(const char* filepath, int format)
     }
     return true;
 }
-
-//void Canva::draw_pixel_at(int x, int y, bool use_couleur_pinceau, ImVec4 couleur)
-//{
-//    if (use_couleur_pinceau) {
-//        data[coord_to_indextexture(x, y) * nrChannels] = (unsigned char)(255 * couleur_pinceau.x);
-//        data[coord_to_indextexture(x, y) * nrChannels + 1] = (unsigned char)(255 * couleur_pinceau.y);
-//        data[coord_to_indextexture(x, y) * nrChannels + 2] = (unsigned char)(255 * couleur_pinceau.z);
-//        if (has_alpha) { data[coord_to_indextexture(x, y) * nrChannels + 3] = (unsigned char)(255 * couleur_pinceau.w); }
-//    }
-//    else {
-//        data[coord_to_indextexture(x, y) * nrChannels] = (unsigned char)(255 * couleur.x);
-//        data[coord_to_indextexture(x, y) * nrChannels + 1] = (unsigned char)(255 * couleur.y);
-//        data[coord_to_indextexture(x, y) * nrChannels + 2] = (unsigned char)(255 * couleur.z);
-//        if (has_alpha) { data[coord_to_indextexture(x, y) * nrChannels + 3] = (unsigned char)(255 * couleur.w); }
-//    }
-//
-//}

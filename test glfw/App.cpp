@@ -24,7 +24,7 @@ unsigned int indices[] = {
 App::App() {
     instance = this;
     imguiWindows = new ImguiWindows(&canva);
-    init_opengl_glfw();
+    init_opengl_glfw_imgui();
     prepare_vertex();
 
 
@@ -42,21 +42,6 @@ void App::cleanup()
     ImGui::DestroyContext();
 }
  
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) // gerer mieux
-{
-    //glViewport(0, 0, width, height);
-}
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) //old
-{
-    /*if (key == GLFW_KEY_E && action == GLFW_PRESS) {
-        for (int i = 1000; i < 15000; i++) {
-            canva.data[i * 3] = 0;
-        }
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, canva.data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }*/
-}
 
 
 
@@ -175,7 +160,7 @@ void App::scroll_callback_wrapper(GLFWwindow* window, double xoffset, double yof
     }
 }
 
-int App::init_opengl_glfw()
+int App::init_opengl_glfw_imgui()
 {
     //DEBUT initialisation de glfw
     glfwInit();
@@ -202,19 +187,21 @@ int App::init_opengl_glfw()
     }
 
     //glViewport(0, 0, 800, 600);
-    //setting the glfw callbacks
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    //     --- setting the glfw callbacks ---
+    //glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     //glfwSetKeyCallback(window, key_callback);
     //glfwSetCursorPosCallback(window, cursor_position_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback_wrapper);
     glfwSetCursorPosCallback(window, cursor_position_callback_wrapper);
     glfwSetScrollCallback(window, scroll_callback_wrapper);
+    
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_CAPTURED);
-    //FIN
 
     glfwGetWindowSize(window, &window_width, &window_height);
-
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1); //so that pixel data rows don't have to align to 4 byte
+
+    //FIN
+
 
     // initialisation imgui
     // Setup Dear ImGui context

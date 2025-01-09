@@ -33,7 +33,7 @@ private :
 
 	int render();
 
-	int init_opengl_glfw();
+	int init_opengl_glfw_imgui();
 
 	void cleanup();
 

@@ -89,19 +89,19 @@ void ImguiWindows::show_ui()
     //test de menu
     if (ImGui::BeginMainMenuBar()) {
         
-        if (ImGui::BeginMenu("File")) {
+        if (ImGui::BeginMenu("Fichier")) {
 
-            ImGui::MenuItem("(file menu)", NULL, false, false);
+            ImGui::MenuItem("(Fichier de menu)", NULL, false, false);
             if (ImGui::MenuItem("New")) {showNewFileWindow = true; printf("New file\n"); }
-            if (ImGui::MenuItem("Open", "Ctrl+O")) { showOpenFileWindow = true; printf("Open file\n");  }
-            if (ImGui::BeginMenu("Open Recent"))
+            if (ImGui::MenuItem("Open")) { showOpenFileWindow = true; printf("Open file\n");  }
+            if (ImGui::BeginMenu("Open Recent (non fonctionnel)"))
             {
-                if (ImGui::MenuItem("fish_hat.jpg")) { canva->load_image("container.jpg"); }
+                if (ImGui::MenuItem("non fonctionnel.jpg")) { /*canva->load_image("container.jpg");*/ }
                 ImGui::MenuItem("fish.png");
                 ImGui::MenuItem("camarchepas.jpg");
                 ImGui::EndMenu();
             }
-            if (ImGui::MenuItem("Save", "Ctrl+S")) { printf("Save\n"); }
+            if (ImGui::MenuItem("Save (non fonctionnel)", "Ctrl+S")) { printf("Save\n"); }
             if (ImGui::MenuItem("Save As..")) { showSaveAsWindow = true; printf("Save as\n"); }
 
             ImGui::EndMenu();
@@ -140,7 +140,7 @@ void ImguiWindows::SaveAsWindow()
 {
 
     
-    bool window_contents_visible = ImGui::Begin("Example: Documents", &showSaveAsWindow);
+    bool window_contents_visible = ImGui::Begin("Save as", &showSaveAsWindow);
     if (!window_contents_visible)
     {
         //printf("Ici\n");
@@ -170,7 +170,7 @@ void ImguiWindows::OpenFileWindow()
 {
 
 
-    bool window_contents_visible = ImGui::Begin("Example: Documents", &showOpenFileWindow);
+    bool window_contents_visible = ImGui::Begin("Open File", &showOpenFileWindow);
     if (!window_contents_visible)
     {
         //printf("Ici\n");
