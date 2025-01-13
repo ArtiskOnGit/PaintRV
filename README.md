@@ -1,5 +1,5 @@
 # PaintRV
-Programme comme paint utilisant imgui, glfw, opengl
+Programme comme paint utilisant imgui, glfw, opengl, stbi
 
 fonctionnalités disponibles : 
 - ouvrir une image (format : jpeg, png, bmp) avec 3 ou 4 channels
