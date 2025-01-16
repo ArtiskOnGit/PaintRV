@@ -53,7 +53,7 @@ void Canva::draw_square_brush(int xpos_mouse, int ypos_mouse)
     
     
     
-    calques[selected_layer]->actualise_texture();
+    //calques[selected_layer]->actualise_texture();
 }
 
 
@@ -65,15 +65,15 @@ void Canva::draw_circle_brush(int xpos_mouse, int ypos_mouse)
     }
     else { calques[selected_layer]->dessiner_brosse_circulaire(xpos_mouse, ypos_mouse, size, u32_color_eraser); }
 
+    //calques[selected_layer]->actualise_texture();
     
-    calques[selected_layer]->actualise_texture();
     
 }
 
 
 void Canva::fill(int x, int y) {
     calques[selected_layer]->fill(x, y, u32_color_brush);
-    calques[selected_layer]->actualise_texture();
+    //calques[selected_layer]->actualise_texture();
 }
 
 

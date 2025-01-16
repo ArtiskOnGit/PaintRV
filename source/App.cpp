@@ -68,19 +68,23 @@ void App::mouse_button_callback(GLFWwindow* window, int button, int action, int 
             return;
         case 0:
             canva.draw_square_brush(xpos, ypos);
+            canva.calques[canva.selected_layer]->actualise_texture();
             break;
         case 1:
             canva.draw_circle_brush(xpos, ypos);
+            canva.calques[canva.selected_layer]->actualise_texture();
             break;
 
         case 3:
             canva.fill(xpos, ypos);
+            canva.calques[canva.selected_layer]->actualise_texture();
             break;
         case 4:
             canva.pipette(xpos, ypos);
             break;
         case 5: // Cercle
             canva.draw_circle(xpos, ypos, canva.size);
+            canva.calques[canva.selected_layer]->actualise_texture();
             break;
         }
 
@@ -111,13 +115,16 @@ void App::cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
             for (int a = 0; a < step_number; a++) {
                 canva.draw_square_brush(glm::mix(xpos, last_mouse_x, a / step_number), glm::mix(ypos, last_mouse_y, a / step_number));
             }
+            canva.calques[canva.selected_layer]->actualise_texture();
             last_mouse_x = xpos;
             last_mouse_y = ypos;
+
             break;
         case 1: // interpolation linéaire entre la dernier position de la souris et la position actuelle mix; (x, y, a) retourne : x*(1-a) + y*a
             for (int a = 0; a < step_number; a++) {
                 canva.draw_circle_brush(glm::mix(xpos, last_mouse_x, a / step_number), glm::mix(ypos, last_mouse_y, a / step_number));
             }
+            canva.calques[canva.selected_layer]->actualise_texture();
             last_mouse_x = xpos;
             last_mouse_y = ypos;
             break;
@@ -250,7 +257,7 @@ void App::prepare_vertex()
 
 int App::render()
 {
-
+    glfwWaitEvents();
 
     glClearColor(1.f, 0.8f, 0.5f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -273,6 +280,7 @@ int App::render()
 
     glfwSwapBuffers(window);
     glfwPollEvents();
+    
 
     return 0;
 }
@@ -282,11 +290,11 @@ void App::run()
     canva.new_blank_canva(550, 550, true);
 
     Shader shader(".\\vertex.vs", ".\\fragment.fs");
-
+    shader.use();
     while (!glfwWindowShouldClose(window))
     {
         imguiWindows->show_ui();
-        shader.use();
+        
         render();
 
     }

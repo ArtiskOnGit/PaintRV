@@ -14,10 +14,26 @@ const int NR_CHANNEL_WITHOUT_ALPHA = 3;
 Layer::Layer(int new_width, int new_height, int new_channels)
 {   
     init_texture();
-	data = new unsigned char[new_width * new_height * new_channels];
-	for (int i = 0; i < new_channels * new_width * new_height; i++) {
-		data[i] = 255;
-	}
+    data = new unsigned char[new_width * new_height * new_channels];
+
+    switch (new_channels) {
+    case 3 :
+        for (int i = 0; i < new_width * new_height * new_channels; i++) {
+                data[i ] = 255;
+        }
+        break;
+    case 4:
+        for (int i = 0; i < new_width * new_height; i++) {
+            for (int j = 0; j < 3; j++) {
+                data[(4*i) + j] = 255;
+            }
+            data[(4*i) + 3] = 0;
+        }
+        break;
+    }
+
+   
+
     if (data) {
         height = new_height;
         width = new_width;
